@@ -11,18 +11,24 @@ import pandas as pd
 from time import time
 import secrets
 from datetime import datetime
+from dotenv import load_dotenv
+load_dotenv()
+
 
 # ---------------- Flask Setup ----------------
+
 app = Flask(__name__, template_folder="templates")
 CORS(app)
-app.secret_key = secrets.token_hex(32)
+
+# Load secrets from .env
+app.secret_key = os.getenv("SECRET_KEY")
 
 # Upload config
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # ---------------- MongoDB Setup ----------------
-MONGO_URI = "mongodb+srv://ramyabhupathi7_db_user:lCJdnDv0u0R73dXU@cluster0.mzcov3g.mongodb.net/?appName=Cluster0/"
+MONGO_URI = os.getenv("MONGO_URI")
 
 client = MongoClient(MONGO_URI)
 db = client["farmer_db"]
