@@ -137,46 +137,68 @@ def predict_veg_price():
 # ---------------- Auth: Signup ----------------
 @app.route("/auth/signup", methods=["POST"])
 def signup():
-    data = request.json
-    fullName = data.get("fullName")
-    email = data.get("email")
-    password = data.get("password")
+    try:
+        # Accept JSON or Form data safely
+        data = request.get_json(silent=True) or request.form
 
-    if not fullName or not email or not password:
-        return jsonify({"message": "All fields required"}), 400
+        fullName = data.get("fullName")
+        email = data.get("email")
+        password = data.get("password")
 
-    if users_collection.find_one({"email": email}):
-        return jsonify({"message": "User already exists"}), 400
+        if not fullName or not email or not password:
+            return jsonify({"message": "All fields required"}), 400
 
-    hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
-    users_collection.insert_one({
-        "fullName": fullName,
-        "email": email,
-        "password": hashed
-    })
+        if users_collection.find_one({"email": email}):
+            return jsonify({"message": "User already exists"}), 409
 
-    return jsonify({"message": "Signup successful!"})
+        hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+
+        users_collection.insert_one({
+            "fullName": fullName,
+            "email": email,
+            "password": hashed
+        })
+
+        return jsonify({"message": "Signup successful"}), 201
+
+    except Exception as e:
+        print("Signup error:", e)
+        return jsonify({"message": "Server error during signup"}), 500
+
 
 
 # ---------------- Auth: Login ----------------
 @app.route("/auth/login", methods=["POST"])
 def login():
-    data = request.json
-    email = data.get("email")
-    password = data.get("password")
+    try:
+        # Accept JSON or Form data safely
+        data = request.get_json(silent=True) or request.form
 
-    user = users_collection.find_one({"email": email})
-    if not user or not bcrypt.checkpw(password.encode("utf-8"), user["password"]):
-        return jsonify({"message": "Invalid email or password"}), 400
+        email = data.get("email")
+        password = data.get("password")
 
-    session["user_id"] = str(user["_id"])
-    session["username"] = user.get("username", user.get("fullName"))
+        if not email or not password:
+            return jsonify({"message": "Email and password required"}), 400
 
-    return jsonify({
-        "message": "Login successful",
-        "fullName": user["fullName"],
-        "redirect": "/mainpage"
-    })
+        user = users_collection.find_one({"email": email})
+
+        if not user:
+            return jsonify({"message": "Invalid email or password"}), 401
+
+        if not bcrypt.checkpw(password.encode("utf-8"), user["password"]):
+            return jsonify({"message": "Invalid email or password"}), 401
+
+        session["user_id"] = str(user["_id"])
+        session["username"] = user.get("fullName")
+
+        return jsonify({
+            "message": "Login successful",
+            "redirect": "/mainpage"
+        }), 200
+
+    except Exception as e:
+        print("Login error:", e)
+        return jsonify({"message": "Server error during login"}), 500
 
 # ---------------- Profile ----------------
 @app.route("/profile", methods=["GET", "POST"])
