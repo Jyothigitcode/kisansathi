@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weather App</title>
+<style>
+body { font-family:"Poppins",sans-serif; margin:0; padding:0; color:#fff; display:flex; flex-direction:column; align-items:center; min-height:100vh; overflow:hidden; transition:background 1s ease-in-out; }
+
+body.clear {
+  background: url("https://www.shutterstock.com/image-photo/blue-sky-gentle-cloud-wisps-600nw-2490223711.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+body.cloudy {
+  background: url("https://images.pexels.com/photos/209831/pexels-photo-209831.jpeg?cs=srgb&dl=pexels-pixabay-209831.jpg&fm=jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+body.rainy { background:linear-gradient(180deg,#667db6,#0082c8,#2c3e50); }
+body.storm { background:linear-gradient(180deg,#232526,#414345); }
+body.snowy { background:linear-gradient(180deg,#83a4d4,#b6fbff); }
+body.foggy { background:linear-gradient(180deg,#bdc3c7,#2c3e50); }
+body.default {
+  background: url("https://images.pexels.com/photos/209831/pexels-photo-209831.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+header { margin-top:15px; text-align:center; z-index:10; position:relative; }
+header h1{ font-size:2.2rem; margin-bottom:5px; font-weight:700; text-shadow: 1px 1px 6px rgba(0,0,0,0.7); }
+#location{ font-size:1rem; opacity:0.85; text-shadow: 1px 1px 6px rgba(0,0,0,0.7); }
+
+.search-box{ display:flex; margin:10px 0; padding:8px; background:rgba(0,0,0,0.3); border-radius:50px; backdrop-filter:blur(10px); width:90%; max-width:400px; z-index:10; position:relative; }
+.search-box input{ border:none; outline:none; padding:12px; border-radius:50px; flex:1; font-size:1rem; color:#fff; background:transparent; }
+.search-box button{ border:none; outline:none; padding:12px 18px; border-radius:50px; background:#ff7eb3; color:white; font-weight:600; cursor:pointer; transition:all 0.3s ease; }
+.search-box button:hover{ background:#ff5c99; transform:scale(1.05); }
+
+#current{ margin-top:5px; text-align:center; padding:20px; border-radius:20px; background: rgba(0,0,0,0.5); backdrop-filter: blur(15px); box-shadow:0 8px 20px rgba(0,0,0,0.25); width:85%; max-width:380px; transition:transform 0.3s; z-index:10; position:relative; text-shadow:1px 1px 6px rgba(0,0,0,0.7); display:none; }
+#current:hover{ transform: translateY(-5px); }
+#current h2{ font-size:3rem; margin:0; }
+#current p{ margin:5px 0; font-size:1.1rem; }
+
+.forecast{ display:flex; overflow-x:auto; gap:15px; padding:15px; margin-top:5px; width:90%; max-width:420px; background:rgba(0,0,0,0.5); border-radius:15px; backdrop-filter:blur(12px); box-shadow:0 5px 15px rgba(0,0,0,0.2); z-index:10; position:relative; display:none; }
+.day-card{ min-width:100px; background: rgba(255,255,255,0.2); border-radius:12px; padding:10px; text-align:center; backdrop-filter: blur(12px); transition: transform 0.3s ease; text-shadow:1px 1px 6px rgba(0,0,0,0.7); }
+.day-card:hover{ transform: translateY(-5px); }
+.day-card h3{ font-size:0.85rem; margin-bottom:8px; font-weight:500; opacity:0.9; }
+.day-card p{ margin:5px 0; font-size:0.9rem; }
+
+.extra{ display:grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap:15px; margin:5px 0 15px 0; width:95%; z-index:10; position:relative; display:none; }
+.extra-card{ background: rgba(255,255,255,0.2); border-radius:15px; padding:12px; text-align:center; font-size:0.9rem; backdrop-filter: blur(10px); box-shadow: inset 2px 2px 6px rgba(255,255,255,0.3), inset -2px -2px 6px rgba(0,0,0,0.2); transition: transform 0.3s; text-shadow:1px 1px 6px rgba(0,0,0,0.7); }
+.extra-card:hover{ transform: scale(1.05); }
+
+.loader{ border:4px solid rgba(255,255,255,0.3); border-radius:50%; border-top:4px solid #fff; width:45px; height:45px; animation: spin 1s linear infinite; margin:30px auto; z-index:10; position:relative; display:none; }
+@keyframes spin{0%{transform:rotate(0);}100%{transform:rotate(360deg);} }
+
+canvas{ position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1; }
+</style>
+</head>
+<body class="default">
+<canvas id="weatherCanvas"></canvas>
+
+<header>
+<h1>🌦️ Weather App</h1>
+<p id="location">Search or allow location access</p>
+</header>
+
+<div class="search-box">
+<input type="text" id="city" placeholder="Search city..." value="{{ city }}">
+<button onclick="getWeather()">🔍</button>
+</div>
+
+<div id="loader" class="loader"></div>
+<div id="current"></div>
+<div class="forecast" id="forecast"></div>
+<div id="extra" class="extra"></div>
+
+<script>
+const apiKey="7575cdd796f2899f1be079ed3e215eb0";
+const canvas=document.getElementById("weatherCanvas");
+const ctx=canvas.getContext("2d");
+let width=canvas.width=window.innerWidth;
+let height=canvas.height=window.innerHeight;
+let particles=[],weatherType="default";
+
+window.addEventListener('resize',()=>{width=canvas.width=window.innerWidth;height=canvas.height=window.innerHeight;});
+
+// Rain
+class RainDrop { constructor(){ this.x=Math.random()*width; this.y=Math.random()*-height; this.length=15+Math.random()*20; this.speed=4+Math.random()*6; } draw(){ ctx.strokeStyle="rgba(255,255,255,0.7)"; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(this.x,this.y); ctx.lineTo(this.x,this.y+this.length); ctx.stroke(); } update(){ this.y+=this.speed; if(this.y>height){ this.y=Math.random()*-100; this.x=Math.random()*width; } this.draw(); } }
+class SnowFlake { constructor(){ this.x=Math.random()*width; this.y=Math.random()*-height; this.radius=2+Math.random()*4; this.speed=1+Math.random()*2; this.angle=Math.random()*Math.PI*2; } draw(){ ctx.fillStyle="rgba(255,255,255,0.8)"; ctx.beginPath(); ctx.arc(this.x,this.y,this.radius,0,Math.PI*2); ctx.fill(); } update(){ this.y+=this.speed; this.x+=Math.sin(this.angle); this.angle+=0.01; if(this.y>height)this.y=Math.random()*-10; this.draw(); } }
+class Cloud { constructor(y){ this.x=Math.random()*width; this.y=y||50+Math.random()*100; this.width=180+Math.random()*100; this.height=50+Math.random()*30; this.speed=0.1+Math.random()*0.3; } draw(){ ctx.fillStyle="rgba(255,255,255,0.8)"; ctx.beginPath(); ctx.ellipse(this.x,this.y,this.width*0.5,this.height*0.5,0,0,Math.PI*2); ctx.ellipse(this.x-this.width*0.3,this.y+5,this.width*0.35,this.height*0.35,0,0,Math.PI*2); ctx.ellipse(this.x+this.width*0.3,this.y+5,this.width*0.35,this.height*0.35,0,0,Math.PI*2); ctx.fill(); } update(){ this.x+=this.speed; if(this.x-this.width>width) this.x=-this.width; this.draw(); } }
+class Lightning { constructor(){ this.opacity=0; } draw(){ ctx.fillStyle=`rgba(255,255,255,${this.opacity})`; ctx.fillRect(0,0,width,height); } update(){ this.opacity=Math.random()<0.02?0.7:0; this.draw(); } }
+class Sun { constructor(){ this.x=width-120; this.y=120; this.radius=60; this.angle=0; } draw(){ let g=ctx.createRadialGradient(this.x,this.y,this.radius*0.1,this.x,this.y,this.radius); g.addColorStop(0,"rgba(255,255,0,0.5)"); g.addColorStop(1,"rgba(255,255,0,0)"); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(this.x,this.y,this.radius,0,Math.PI*2); ctx.fill(); } update(){ this.angle+=0.01; this.draw(); } }
+const sun=new Sun();
+
+function createParticles(type){
+    particles=[];
+    if(type==="rainy"){for(let i=0;i<300;i++) particles.push(new RainDrop());}
+    else if(type==="snowy"){for(let i=0;i<150;i++) particles.push(new SnowFlake());}
+    else if(type==="storm"){particles.push(new Lightning());for(let i=0;i<300;i++) particles.push(new RainDrop());}
+    // No particles for cloudy to show only background
+}
+
+function animate(){
+    if(weatherType !== "cloudy"){  // skip canvas animation for cloudy
+        ctx.clearRect(0,0,width,height);
+        if(weatherType==="clear") sun.update();
+        particles.forEach(p=>p.update());
+    }
+    requestAnimationFrame(animate);
+}
+animate();
+
+async function getWeather(city=null){
+    document.getElementById("loader").style.display="block";
+    document.getElementById("current").style.display="none";
+    document.getElementById("forecast").style.display="none";
+    document.getElementById("extra").style.display="none";
+
+    try{
+        if(!city) city=document.getElementById("city").value.trim();
+        if(!city){document.getElementById("location").innerText="⚠️ Enter a city name";document.getElementById("loader").style.display="none";return;}
+        let url=`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+        let res=await fetch(url);
+        if(!res.ok) throw new Error("City not found");
+        let data=await res.json();
+        document.getElementById("location").innerText=`📍 ${data.name}, ${data.sys.country}`;
+        document.getElementById("current").innerHTML=`<h2>${data.main.temp}°C</h2><p>${getWeatherIcon(data.weather[0].id)} ${data.weather[0].description}</p><p>💨 Wind: ${data.wind.speed} m/s</p><p>💧 Humidity: ${data.main.humidity}%</p>`;
+        setWeatherAnimation(data.weather[0].id);
+        document.getElementById("current").style.display="block";
+
+        let forecastUrl=`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+        let fRes=await fetch(forecastUrl);
+        let forecastData=await fRes.json();
+        let daily={};
+        forecastData.list.forEach(f=>{let date=new Date(f.dt*1000).toDateString(); if(!daily[date]) daily[date]=[]; daily[date].push(f);});
+        let forecastDiv=document.getElementById("forecast");
+        forecastDiv.innerHTML="";
+        Object.keys(daily).slice(0,5).forEach(d=>{
+            let temps=daily[d].map(f=>f.main.temp);
+            let min=Math.min(...temps);
+            let max=Math.max(...temps);
+            let icon=getWeatherIcon(daily[d][0].weather[0].id);
+            forecastDiv.innerHTML+=`<div class="day-card"><h3>${d.slice(0,10)}</h3><p style="font-size:1.6rem">${icon}</p><p>${min.toFixed(1)}°C - ${max.toFixed(1)}°C</p></div>`;
+        });
+        forecastDiv.style.display="flex";
+
+        let extraDiv=document.getElementById("extra");
+        extraDiv.innerHTML=`<div class="extra-card">🌅 Sunrise: ${new Date(data.sys.sunrise*1000).toLocaleTimeString()}</div>
+                            <div class="extra-card">🌇 Sunset: ${new Date(data.sys.sunset*1000).toLocaleTimeString()}</div>
+                            <div class="extra-card">🌡 Feels Like: ${data.main.feels_like}°C</div>
+                            <div class="extra-card">🌍 Pressure: ${data.main.pressure} hPa</div>`;
+        extraDiv.style.display="grid";
+    } catch(err){document.getElementById("location").innerText="❌ "+err.message;}
+    document.getElementById("loader").style.display="none";
+}
+
+function getWeatherIcon(code){
+    if(code>=200&&code<300)return"⛈️";
+    if(code>=300&&code<500)return"🌦️";
+    if(code>=500&&code<600)return"🌧️";
+    if(code>=600&&code<700)return"❄️";
+    if(code>=700&&code<800)return"🌫️";
+    if(code===800)return"☀️";
+    if(code>800)return"☁️";
+    return"🌍";
+}
+
+function setWeatherAnimation(code){
+    weatherType="default"; document.body.className="default";
+    if(code>=200 && code<300){document.body.className="storm"; weatherType="storm";}
+    else if(code>=300 && code<600){document.body.className="rainy"; weatherType="rainy";}
+    else if(code>=600 && code<700){document.body.className="snowy"; weatherType="snowy";}
+    else if(code>=700 && code<800){document.body.className="foggy"; weatherType="foggy";}
+    else if(code===800){document.body.className="clear"; weatherType="clear";}
+    else if(code>800){document.body.className="cloudy"; weatherType="cloudy";}
+    createParticles(weatherType);
+}
+
+// auto load default city
+window.onload = () => {
+    const defaultCity = document.getElementById("city").value;
+    if (defaultCity) getWeather(defaultCity);
+};
+</script>
+</body>
+</html>

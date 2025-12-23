@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - Farmer Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f9f4;
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh;
+    }
+    .profile-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 400px;
+      text-align: center;
+    }
+    .profile-photo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: #28a745;
+      color: white;
+      font-size: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px auto;
+      user-select: none;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #2e7d32;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      text-align: left;
+    }
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    input[type="text"], input[type="number"], input[type="tel"] {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      background: #28a745;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #1e5f2f;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <div class="profile-photo">{{ (user.fullName[0] if user.fullName else '?') | upper }}</div>
+    <h2>{{ user.fullName }}</h2>
+
+    <form method="POST">
+      <label for="landSize">Farming Land Size (acres)</label>
+      <input type="number" id="landSize" name="landSize" placeholder="e.g. 5" value="{{ user.land_size if user.land_size else '' }}" required>
+
+      <label for="experience">Farming Experience (years)</label>
+      <input type="number" id="experience" name="experience" placeholder="e.g. 10" value="{{ user.experience if user.experience else '' }}" required>
+
+      <label for="city">Location (City)</label>
+      <input type="text" id="city" name="city" placeholder="e.g. Hyderabad" value="{{ user.city if user.city else '' }}" required>
+
+      <label for="mobile">Mobile Number</label>
+      <input type="tel" id="mobile" name="mobile" placeholder="e.g. 9999999999" value="{{ user.mobile if user.mobile else '' }}" required>
+
+      <button type="submit">Save Profile</button>
+    </form>
+  </div>
+</body>
+</html>

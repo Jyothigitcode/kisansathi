@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Crop Disease Reporting</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <style>
+    /* Background with image + gradient */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),
+                  url("https://images.pexels.com/photos/6216870/pexels-photo-6216870.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260")
+                  no-repeat center center/cover;
+      font-family: "Segoe UI", Roboto, sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 1400px;
+      width: 100%;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      animation: fadeInDown 1s ease;
+    }
+
+    header h1 {
+      font-size: 36px;
+      margin: 0;
+      background: linear-gradient(90deg, #7fffd4, #00fa9a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.85);
+      margin-top: 6px;
+    }
+
+    /* Layout */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+      animation: fadeInUp 1s ease;
+    }
+
+    @media (min-width: 1000px) {
+      .grid {
+        grid-template-columns: 500px 1fr;
+        align-items: stretch;
+      }
+    }
+
+    /* Glass card */
+    .card {
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 24px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,0.3);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      transition: transform .2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 18px;
+      font-size: 24px;
+      color: #fff;
+    }
+
+    /* Form */
+    form { display: flex; flex-direction: column; gap: 14px; }
+
+    label { font-size: 14px; font-weight: 600; color: #eee; }
+
+    input[type="text"], textarea, input[type="file"] {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: none;
+      background: #fff;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: background .2s, transform .1s;
+    }
+
+    input[type="text"]:focus, textarea:focus {
+      background: #fff;
+      transform: scale(1.02); 
+    }
+
+    textarea { resize: vertical; min-height: 110px; }
+
+    .btn {
+      padding: 12px;
+      border-radius: 14px;
+      background: linear-gradient(90deg,#32cd32,#228b22);
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(50,205,50,0.4);
+    }
+
+    .btn.secondary {
+      background: rgba(255,255,255,0.25);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: #fff;
+    }
+
+    .img-preview {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 14px;
+      display: none;
+    }
+
+    /* Map */
+    #map {
+      width: 100%;
+      height: 600px;
+      border-radius: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      overflow: hidden;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from { opacity:0; transform: translateY(-20px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity:0; transform: translateY(20px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🌱 Kisaan Sathi</h1>
+      <p>Report crop diseases with live location & images</p>
+    </header>
+
+    <div class="grid">
+      <!-- Form -->
+      <div class="card">
+        <h2>Report Disease</h2>
+        <form id="diseaseForm" enctype="multipart/form-data">
+          <div>
+            <label>Crop</label>
+            <input type="text" name="crop" required placeholder="e.g., Tomato">
+          </div>
+          <div>
+            <label>Disease</label>
+            <input type="text" name="disease" required placeholder="e.g., Leaf blight">
+          </div>
+          <div>
+            <label>Symptoms</label>
+            <textarea name="symptoms" placeholder="Describe symptoms..."></textarea>
+          </div>
+          <div>
+            <label>Image</label>
+            <input type="file" name="image" id="image" accept="image/*" required>
+            <img id="preview" class="img-preview" />
+          </div>
+
+          <!-- Hidden fields -->
+          <input type="hidden" name="lat" id="lat">
+          <input type="hidden" name="lng" id="lng">
+
+          <button type="submit" class="btn">Submit Report</button>
+          <button type="button" id="recenter" class="btn secondary">📍 Recenter to My Location</button>
+        </form>
+      </div>
+
+      <!-- Map -->
+      <div class="card">
+        <h2>Nearby Disease Map</h2>
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    let map = L.map('map').setView([17.3850,78.4867],6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      attribution:'&copy; OpenStreetMap'
+    }).addTo(map);
+
+    let selectedMarker = null;
+    const preview = document.getElementById("preview");
+    const imageInput = document.getElementById("image");
+
+    imageInput.addEventListener("change", e=>{
+      const file = e.target.files[0];
+      if(file){
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+      } else {
+        preview.style.display = "none";
+      }
+    });
+
+    function setLocation(lat,lng,label="📍 Location"){
+      document.getElementById("lat").value = lat;
+      document.getElementById("lng").value = lng;
+      if(selectedMarker) map.removeLayer(selectedMarker);
+      selectedMarker = L.marker([lat,lng]).addTo(map).bindPopup(label).openPopup();
+      map.setView([lat,lng],15);
+    }
+
+    function locateUser(){
+      if(!navigator.geolocation){
+        alert("Geolocation not supported");
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(pos=>{
+        setLocation(pos.coords.latitude,pos.coords.longitude,"📍 Your Location");
+      },()=>{
+        alert("Location denied or unavailable. Click map instead.");
+      },{enableHighAccuracy:true});
+    }
+
+    locateUser();
+    document.getElementById("recenter").onclick=locateUser;
+
+    map.on("click",e=>{
+      setLocation(e.latlng.lat,e.latlng.lng,"📍 Selected location");
+    });
+
+    async function loadDiseases(){
+      const res = await fetch("/get_diseases");
+      const data = await res.json();
+      data.forEach(d=>{
+        const m=L.marker([d.location.lat,d.location.lng]).addTo(map);
+        m.bindPopup(`<b>${d.crop} - ${d.disease}</b><br>
+                     Symptoms: ${d.symptoms||"None"}<br>
+                     <img src="${d.image_url}" width="150" style="border-radius:10px;margin-top:6px">`);
+      });
+    }
+    loadDiseases();
+
+    document.getElementById("diseaseForm").onsubmit=async e=>{
+      e.preventDefault();
+      if(!document.getElementById("lat").value){
+        alert("Please allow GPS or click the map.");
+        return;
+      }
+      const fd=new FormData(e.target);
+      const res=await fetch("/upload_disease",{method:"POST",body:fd});
+      const data=await res.json();
+      alert(data.message);
+      e.target.reset();
+      preview.style.display="none";
+      loadDiseases();
+    }
+  </script>
+</body>
+</html>

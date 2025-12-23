@@ -1,0 +1,1414 @@
+{
+    "states": [
+        {
+            "state": "Andhra Pradesh",
+            "districts": [
+                {
+                    "district": "Guntur",
+                    "crops": [
+                        {
+                            "name": "Paddy",
+                            "season": "Kharif & Rabi",
+                            "sowing_window": "June-July & Nov-Dec",
+                            "harvesting_window": "Oct-Nov & Mar-Apr",
+                            "irrigation": "Canal irrigation from Krishna River, bore wells",
+                            "fertilizers": [
+                                "DAP",
+                                "MOP",
+                                "Urea"
+                            ],
+                            "pests_diseases": [
+                                "BPH",
+                                "BPH (Brown Plant Hopper)",
+                                "Blast",
+                                "Rice Blast",
+                                "Sheath Blight"
+                            ],
+                            "advisories": [
+                                "Adopt SRI method",
+                                "Adopt SRI method for water saving",
+                                "Adopt water-saving methods like alternate wetting and drying",
+                                "Apply neem-coated urea",
+                                "Use pest-resistant varieties",
+                                "Use resistant varieties"
+                            ],
+                            "tasks": [
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Land preparation",
+                                    "days_after_sowing": 0
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed selection",
+                                    "days_after_sowing": 1
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed soaking",
+                                    "days_after_sowing": 2
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed sowing",
+                                    "days_after_sowing": 3
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Initial watering",
+                                    "days_after_sowing": 5
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "First fertilizer application",
+                                    "days_after_sowing": 15
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Weeding",
+                                    "days_after_sowing": 25
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Pest control",
+                                    "days_after_sowing": 35
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Second fertilizer application",
+                                    "days_after_sowing": 45
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Water management",
+                                    "days_after_sowing": 55
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Field drainage",
+                                    "days_before_harvest": 5
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Cutting",
+                                    "days_before_harvest": 2
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Threshing",
+                                    "days_after_harvest": 0
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Drying",
+                                    "days_after_harvest": 1
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Storage",
+                                    "days_after_harvest": 2
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Cotton",
+                            "season": "Kharif",
+                            "sowing_window": "June-July",
+                            "harvesting_window": "Nov-Jan",
+                            "irrigation": "Rainfed with bore wells",
+                            "fertilizers": [
+                                "Micronutrients",
+                                "NPK mixtures"
+                            ],
+                            "pests_diseases": [
+                                "Pink Bollworm",
+                                "Sucking Pests"
+                            ],
+                            "advisories": [
+                                "Install pheromone traps",
+                                "Practice timely intercultivation",
+                                "Use BG-II hybrid varieties"
+                            ],
+                            "tasks": [
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Land preparation",
+                                    "days_after_sowing": 0
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed selection",
+                                    "days_after_sowing": 1
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed soaking",
+                                    "days_after_sowing": 2
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed sowing",
+                                    "days_after_sowing": 3
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Initial watering",
+                                    "days_after_sowing": 5
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "First fertilizer application",
+                                    "days_after_sowing": 15
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Weeding",
+                                    "days_after_sowing": 25
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Pest control",
+                                    "days_after_sowing": 35
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Second fertilizer application",
+                                    "days_after_sowing": 45
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Water management",
+                                    "days_after_sowing": 55
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Field drainage",
+                                    "days_before_harvest": 5
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Cutting",
+                                    "days_before_harvest": 2
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Threshing",
+                                    "days_after_harvest": 0
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Drying",
+                                    "days_after_harvest": 1
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Storage",
+                                    "days_after_harvest": 2
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Chili",
+                            "season": "Kharif & Rabi",
+                            "sowing_window": "June-July & Nov",
+                            "harvesting_window": "Oct-Jan & Mar-Apr",
+                            "irrigation": "Bore wells and drip",
+                            "fertilizers": [
+                                "FYM",
+                                "NPK"
+                            ],
+                            "pests_diseases": [
+                                "Thrips",
+                                "Leaf Curl Virus"
+                            ],
+                            "advisories": [
+                                "Use disease-free seeds",
+                                "Apply mulch for moisture"
+                            ],
+                            "tasks": [
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Land preparation",
+                                    "days_after_sowing": 0
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed selection",
+                                    "days_after_sowing": 1
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed soaking",
+                                    "days_after_sowing": 2
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed sowing",
+                                    "days_after_sowing": 3
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Initial watering",
+                                    "days_after_sowing": 5
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "First fertilizer application",
+                                    "days_after_sowing": 15
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Weeding",
+                                    "days_after_sowing": 25
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Pest control",
+                                    "days_after_sowing": 35
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Second fertilizer application",
+                                    "days_after_sowing": 45
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Water management",
+                                    "days_after_sowing": 55
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Field drainage",
+                                    "days_before_harvest": 5
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Cutting",
+                                    "days_before_harvest": 2
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Threshing",
+                                    "days_after_harvest": 0
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Drying",
+                                    "days_after_harvest": 1
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Storage",
+                                    "days_after_harvest": 2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "district": "Visakhapatnam",
+                    "crops": [
+                        {
+                            "name": "Ragi",
+                            "season": "Kharif",
+                            "sowing_window": "July-Aug",
+                            "harvesting_window": "Nov-Dec",
+                            "irrigation": "Mostly rainfed, tanks",
+                            "fertilizers": [
+                                "DAP",
+                                "FYM",
+                                "Urea"
+                            ],
+                            "pests_diseases": [
+                                "Leaf Blast",
+                                "Smut"
+                            ],
+                            "advisories": [
+                                "Apply organic manures",
+                                "Follow line sowing for better yield",
+                                "Line sowing for better yield",
+                                "Use drought-tolerant varieties"
+                            ],
+                            "tasks": [
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Land preparation",
+                                    "days_after_sowing": 0
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed selection",
+                                    "days_after_sowing": 1
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed soaking",
+                                    "days_after_sowing": 2
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed sowing",
+                                    "days_after_sowing": 3
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Initial watering",
+                                    "days_after_sowing": 5
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "First fertilizer application",
+                                    "days_after_sowing": 15
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Weeding",
+                                    "days_after_sowing": 25
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Pest control",
+                                    "days_after_sowing": 35
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Second fertilizer application",
+                                    "days_after_sowing": 45
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Water management",
+                                    "days_after_sowing": 55
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Field drainage",
+                                    "days_before_harvest": 5
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Cutting",
+                                    "days_before_harvest": 2
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Threshing",
+                                    "days_after_harvest": 0
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Drying",
+                                    "days_after_harvest": 1
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Storage",
+                                    "days_after_harvest": 2
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Cashew",
+                            "season": "Perennial",
+                            "sowing_window": "June-July",
+                            "harvesting_window": "Feb-May",
+                            "irrigation": "Rainfed",
+                            "fertilizers": [
+                                "FYM",
+                                "NPK mixture"
+                            ],
+                            "pests_diseases": [
+                                "Powdery Mildew",
+                                "Tea Mosquito Bug"
+                            ],
+                            "advisories": [
+                                "Practice pruning for better branching",
+                                "Pruning for better branching",
+                                "Use grafted varieties",
+                                "Use grafted varieties for high yield"
+                            ],
+                            "tasks": [
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Land preparation",
+                                    "days_after_sowing": 0
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed selection",
+                                    "days_after_sowing": 1
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed soaking",
+                                    "days_after_sowing": 2
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed sowing",
+                                    "days_after_sowing": 3
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Initial watering",
+                                    "days_after_sowing": 5
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "First fertilizer application",
+                                    "days_after_sowing": 15
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Weeding",
+                                    "days_after_sowing": 25
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Pest control",
+                                    "days_after_sowing": 35
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Second fertilizer application",
+                                    "days_after_sowing": 45
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Water management",
+                                    "days_after_sowing": 55
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Field drainage",
+                                    "days_before_harvest": 5
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Cutting",
+                                    "days_before_harvest": 2
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Threshing",
+                                    "days_after_harvest": 0
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Drying",
+                                    "days_after_harvest": 1
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Storage",
+                                    "days_after_harvest": 2
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "state": "Telangana",
+            "districts": [
+                {
+                    "district": "Nalgonda",
+                    "crops": [
+                        {
+                            "name": "Redgram",
+                            "season": "Kharif",
+                            "sowing_window": "June-July",
+                            "harvesting_window": "Jan-Feb",
+                            "irrigation": "Rainfed with bore well support",
+                            "fertilizers": [
+                                "Urea",
+                                "DAP"
+                            ],
+                            "pests_diseases": [
+                                "Pod borer",
+                                "Wilt"
+                            ],
+                            "advisories": [
+                                "Use wilt-resistant varieties",
+                                "Intercrop with cereals"
+                            ],
+                            "tasks": [
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Land preparation",
+                                    "days_after_sowing": 0
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed selection",
+                                    "days_after_sowing": 1
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed soaking",
+                                    "days_after_sowing": 2
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed sowing",
+                                    "days_after_sowing": 3
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Initial watering",
+                                    "days_after_sowing": 5
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "First fertilizer application",
+                                    "days_after_sowing": 15
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Weeding",
+                                    "days_after_sowing": 25
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Pest control",
+                                    "days_after_sowing": 35
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Second fertilizer application",
+                                    "days_after_sowing": 45
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Water management",
+                                    "days_after_sowing": 55
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Field drainage",
+                                    "days_before_harvest": 5
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Cutting",
+                                    "days_before_harvest": 2
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Threshing",
+                                    "days_after_harvest": 0
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Drying",
+                                    "days_after_harvest": 1
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Storage",
+                                    "days_after_harvest": 2
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Paddy",
+                            "season": "Rabi",
+                            "sowing_window": "Nov-Dec",
+                            "harvesting_window": "Mar-Apr",
+                            "irrigation": "Nagarjuna Sagar canal, bore wells",
+                            "fertilizers": [
+                                "DAP",
+                                "MOP",
+                                "Urea"
+                            ],
+                            "pests_diseases": [
+                                "BPH",
+                                "Blast"
+                            ],
+                            "advisories": [
+                                "Adopt water-saving methods like alternate wetting and drying",
+                                "Use resistant varieties",
+                                "Water-saving methods"
+                            ],
+                            "tasks": [
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Land preparation",
+                                    "days_after_sowing": 0
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed selection",
+                                    "days_after_sowing": 1
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed soaking",
+                                    "days_after_sowing": 2
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed sowing",
+                                    "days_after_sowing": 3
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Initial watering",
+                                    "days_after_sowing": 5
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "First fertilizer application",
+                                    "days_after_sowing": 15
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Weeding",
+                                    "days_after_sowing": 25
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Pest control",
+                                    "days_after_sowing": 35
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Second fertilizer application",
+                                    "days_after_sowing": 45
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Water management",
+                                    "days_after_sowing": 55
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Field drainage",
+                                    "days_before_harvest": 5
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Cutting",
+                                    "days_before_harvest": 2
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Threshing",
+                                    "days_after_harvest": 0
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Drying",
+                                    "days_after_harvest": 1
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Storage",
+                                    "days_after_harvest": 2
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Redgram (Tur)",
+                            "season": "Kharif",
+                            "sowing_window": "June-July",
+                            "harvesting_window": "January-February",
+                            "irrigation": "Rainfed with bore well irrigation support",
+                            "fertilizers": [
+                                "Urea",
+                                "DAP"
+                            ],
+                            "pests_diseases": [
+                                "Pod borer",
+                                "Wilt"
+                            ],
+                            "advisories": [
+                                "Use wilt-resistant varieties",
+                                "Intercrop with cereals to reduce pests",
+                                "Use bio-pesticides for pod borer"
+                            ],
+                            "tasks": [
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Land preparation",
+                                    "days_after_sowing": 0
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed selection",
+                                    "days_after_sowing": 1
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed soaking",
+                                    "days_after_sowing": 2
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed sowing",
+                                    "days_after_sowing": 3
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Initial watering",
+                                    "days_after_sowing": 5
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "First fertilizer application",
+                                    "days_after_sowing": 15
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Weeding",
+                                    "days_after_sowing": 25
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Pest control",
+                                    "days_after_sowing": 35
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Second fertilizer application",
+                                    "days_after_sowing": 45
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Water management",
+                                    "days_after_sowing": 55
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Field drainage",
+                                    "days_before_harvest": 5
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Cutting",
+                                    "days_before_harvest": 2
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Threshing",
+                                    "days_after_harvest": 0
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Drying",
+                                    "days_after_harvest": 1
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Storage",
+                                    "days_after_harvest": 2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "district": "Karimnagar",
+                    "crops": [
+                        {
+                            "name": "Maize",
+                            "season": "Kharif & Rabi",
+                            "sowing_window": "Jun-Jul & Nov",
+                            "harvesting_window": "Oct & Mar",
+                            "irrigation": "Canal & bore wells",
+                            "fertilizers": [
+                                "NPK",
+                                "Zinc sulphate"
+                            ],
+                            "pests_diseases": [
+                                "Fall Armyworm",
+                                "Stem Borer"
+                            ],
+                            "advisories": [
+                                "Apply balanced fertilization",
+                                "Monitor for Fall Armyworm and use pheromone traps",
+                                "Monitor pests"
+                            ],
+                            "tasks": [
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Land preparation",
+                                    "days_after_sowing": 0
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed selection",
+                                    "days_after_sowing": 1
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed soaking",
+                                    "days_after_sowing": 2
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed sowing",
+                                    "days_after_sowing": 3
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Initial watering",
+                                    "days_after_sowing": 5
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "First fertilizer application",
+                                    "days_after_sowing": 15
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Weeding",
+                                    "days_after_sowing": 25
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Pest control",
+                                    "days_after_sowing": 35
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Second fertilizer application",
+                                    "days_after_sowing": 45
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Water management",
+                                    "days_after_sowing": 55
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Field drainage",
+                                    "days_before_harvest": 5
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Cutting",
+                                    "days_before_harvest": 2
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Threshing",
+                                    "days_after_harvest": 0
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Drying",
+                                    "days_after_harvest": 1
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Storage",
+                                    "days_after_harvest": 2
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Turmeric",
+                            "season": "Kharif",
+                            "sowing_window": "May-June",
+                            "harvesting_window": "Jan-Mar",
+                            "irrigation": "Bore wells & canal",
+                            "fertilizers": [
+                                "FYM",
+                                "NPK"
+                            ],
+                            "pests_diseases": [
+                                "Leaf spot",
+                                "Rhizome rot"
+                            ],
+                            "advisories": [
+                                "Ensure good drainage",
+                                "Provide good drainage",
+                                "Use disease-free rhizomes"
+                            ],
+                            "tasks": [
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Land preparation",
+                                    "days_after_sowing": 0
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed selection",
+                                    "days_after_sowing": 1
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed soaking",
+                                    "days_after_sowing": 2
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed sowing",
+                                    "days_after_sowing": 3
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Initial watering",
+                                    "days_after_sowing": 5
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "First fertilizer application",
+                                    "days_after_sowing": 15
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Weeding",
+                                    "days_after_sowing": 25
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Pest control",
+                                    "days_after_sowing": 35
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Second fertilizer application",
+                                    "days_after_sowing": 45
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Water management",
+                                    "days_after_sowing": 55
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Field drainage",
+                                    "days_before_harvest": 5
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Cutting",
+                                    "days_before_harvest": 2
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Threshing",
+                                    "days_after_harvest": 0
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Drying",
+                                    "days_after_harvest": 1
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Storage",
+                                    "days_after_harvest": 2
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "state": "Jharkhand",
+            "districts": [
+                {
+                    "district": "Ranchi",
+                    "crops": [
+                        {
+                            "name": "Rice",
+                            "season": "Kharif",
+                            "sowing_window": "Jun-Aug",
+                            "harvesting_window": "Oct-Nov",
+                            "irrigation": "Flood",
+                            "fertilizers": [
+                                "N",
+                                "P",
+                                "K"
+                            ],
+                            "pests_diseases": [
+                                "Stem Borer",
+                                "Leaf Folder"
+                            ],
+                            "advisories": [
+                                "Avoid late sowing",
+                                "Use certified seeds"
+                            ],
+                            "tasks": [
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Land preparation",
+                                    "days_after_sowing": 0
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed selection",
+                                    "days_after_sowing": 1
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed soaking",
+                                    "days_after_sowing": 2
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed sowing",
+                                    "days_after_sowing": 3
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Initial watering",
+                                    "days_after_sowing": 5
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "First fertilizer application",
+                                    "days_after_sowing": 15
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Weeding",
+                                    "days_after_sowing": 25
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Pest control",
+                                    "days_after_sowing": 35
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Second fertilizer application",
+                                    "days_after_sowing": 45
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Water management",
+                                    "days_after_sowing": 55
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Field drainage",
+                                    "days_before_harvest": 5
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Cutting",
+                                    "days_before_harvest": 2
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Threshing",
+                                    "days_after_harvest": 0
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Drying",
+                                    "days_after_harvest": 1
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Storage",
+                                    "days_after_harvest": 2
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Maize",
+                            "season": "Kharif",
+                            "sowing_window": "Jun-Jul",
+                            "harvesting_window": "Oct",
+                            "irrigation": "Drip",
+                            "fertilizers": [
+                                "N",
+                                "P",
+                                "K"
+                            ],
+                            "pests_diseases": [
+                                "Fall Armyworm",
+                                "Leaf Blight"
+                            ],
+                            "advisories": [
+                                "Monitor pests",
+                                "Apply fertilizers based on soil test"
+                            ],
+                            "tasks": [
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Land preparation",
+                                    "days_after_sowing": 0
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed selection",
+                                    "days_after_sowing": 1
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed soaking",
+                                    "days_after_sowing": 2
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed sowing",
+                                    "days_after_sowing": 3
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Initial watering",
+                                    "days_after_sowing": 5
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "First fertilizer application",
+                                    "days_after_sowing": 15
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Weeding",
+                                    "days_after_sowing": 25
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Pest control",
+                                    "days_after_sowing": 35
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Second fertilizer application",
+                                    "days_after_sowing": 45
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Water management",
+                                    "days_after_sowing": 55
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Field drainage",
+                                    "days_before_harvest": 5
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Cutting",
+                                    "days_before_harvest": 2
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Threshing",
+                                    "days_after_harvest": 0
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Drying",
+                                    "days_after_harvest": 1
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Storage",
+                                    "days_after_harvest": 2
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Pigeonpea",
+                            "season": "Kharif",
+                            "sowing_window": "Jun-Jul",
+                            "harvesting_window": "Oct-Nov",
+                            "irrigation": "Rainfed",
+                            "fertilizers": [
+                                "N",
+                                "P",
+                                "K"
+                            ],
+                            "pests_diseases": [
+                                "Wilt",
+                                "Root Rot"
+                            ],
+                            "advisories": [
+                                "Ensure proper drainage",
+                                "Rotate crops"
+                            ],
+                            "tasks": [
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Land preparation",
+                                    "days_after_sowing": 0
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed selection",
+                                    "days_after_sowing": 1
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed soaking",
+                                    "days_after_sowing": 2
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed sowing",
+                                    "days_after_sowing": 3
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Initial watering",
+                                    "days_after_sowing": 5
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "First fertilizer application",
+                                    "days_after_sowing": 15
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Weeding",
+                                    "days_after_sowing": 25
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Pest control",
+                                    "days_after_sowing": 35
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Second fertilizer application",
+                                    "days_after_sowing": 45
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Water management",
+                                    "days_after_sowing": 55
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Field drainage",
+                                    "days_before_harvest": 5
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Cutting",
+                                    "days_before_harvest": 2
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Threshing",
+                                    "days_after_harvest": 0
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Drying",
+                                    "days_after_harvest": 1
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Storage",
+                                    "days_after_harvest": 2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "district": "Dumka",
+                    "crops": [
+                        {
+                            "name": "Wheat",
+                            "season": "Rabi",
+                            "sowing_window": "Nov-Dec",
+                            "harvesting_window": "Mar-Apr",
+                            "irrigation": "Irrigated",
+                            "fertilizers": [
+                                "NPK"
+                            ],
+                            "pests_diseases": [
+                                "Rust",
+                                "Powdery Mildew"
+                            ],
+                            "advisories": [
+                                "Use certified seeds",
+                                "Monitor for pests"
+                            ],
+                            "tasks": [
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Land preparation",
+                                    "days_after_sowing": 0
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed selection",
+                                    "days_after_sowing": 1
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed soaking",
+                                    "days_after_sowing": 2
+                                },
+                                {
+                                    "stage": "Sowing",
+                                    "task": "Seed sowing",
+                                    "days_after_sowing": 3
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Initial watering",
+                                    "days_after_sowing": 5
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "First fertilizer application",
+                                    "days_after_sowing": 15
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Weeding",
+                                    "days_after_sowing": 25
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Pest control",
+                                    "days_after_sowing": 35
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Second fertilizer application",
+                                    "days_after_sowing": 45
+                                },
+                                {
+                                    "stage": "Growth",
+                                    "task": "Water management",
+                                    "days_after_sowing": 55
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Field drainage",
+                                    "days_before_harvest": 5
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Cutting",
+                                    "days_before_harvest": 2
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Threshing",
+                                    "days_after_harvest": 0
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Drying",
+                                    "days_after_harvest": 1
+                                },
+                                {
+                                    "stage": "Harvesting",
+                                    "task": "Storage",
+                                    "days_after_harvest": 2
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

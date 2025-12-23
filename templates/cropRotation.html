@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Crop Rotation with Fertility Bar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7f6;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 80%;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      text-align: center;
+    }
+    h1 { color: #333; margin-bottom: 20px; }
+    #fertility-status, #suggestion, #history-container { margin-bottom: 30px; }
+    input[type="number"] {
+      width: 100px;
+      padding: 8px;
+      font-size: 16px;
+      margin-right: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 12px 25px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+    button:hover { background-color: #45a049; }
+    #soil-fertility {
+      font-weight: bold;
+      font-size: 1.3em;
+    }
+    #crop-name { font-weight: bold; color: #ff5722; font-size: 1.2em; }
+    #error-msg { color: red; font-weight: bold; margin-top: 10px; }
+    ul { text-align: left; padding-left: 20px; }
+    /* Fertility bar */
+    .fertility-bar-container {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 20px;
+      overflow: hidden;
+      height: 25px;
+      margin: 10px 0 20px;
+    }
+    .fertility-bar {
+      height: 100%;
+      width: 0%;
+      text-align: center;
+      line-height: 25px;
+      color: white;
+      font-weight: bold;
+      border-radius: 20px;
+      transition: width 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Crop Rotation with Fertility Bar</h1>
+    <p>Enter initial soil fertility (0 to 1), then click "Set Fertility".</p>
+
+    <input type="number" id="initial-fertility" min="0" max="1" step="0.01" placeholder="0.0 - 1.0" />
+    <button id="set-fertility-btn">Set Fertility</button>
+    <div id="error-msg"></div>
+
+    <div id="fertility-status" style="display:none;">
+      <h2>Soil Fertility: <span id="soil-fertility"></span></h2>
+      <div class="fertility-bar-container">
+        <div id="fertility-bar" class="fertility-bar">0%</div>
+      </div>
+    </div>
+
+    <div id="suggestion" style="display:none;">
+      <h3>Suggested Next Crop: <span id="crop-name">None</span></h3>
+    </div>
+
+    <button id="suggest-crop" style="display:none;">Suggest Next Crop</button>
+
+    <div id="history-container" style="display:none;">
+      <h4>Crop Rotation History:</h4>
+      <ul id="history-list"></ul>
+    </div>
+  </div>
+
+  <script>
+    class Crop {
+      constructor(name, fertilityImpact) { this.name = name; this.fertilityImpact = fertilityImpact; }
+    }
+
+    class CropRotation {
+      constructor(initialFertility) {
+        this.crops = [
+          new Crop('Paddy', -0.8),
+          new Crop('Wheat', -0.5),
+          new Crop('Legumes', 0.5),
+          new Crop('Maize', -0.6),
+          new Crop('Barley', -0.3),
+          new Crop('Alfalfa', 0.7),
+        ];
+        this.soilFertility = initialFertility;
+      }
+
+      getNextCrop() {
+        const healthyCrops = this.crops.filter(c => {
+          const newFertility = this.soilFertility + c.fertilityImpact;
+          return newFertility >= 0.2 && newFertility <= 0.8;
+        });
+        if (healthyCrops.length > 0) {
+          return healthyCrops.sort((a,b)=>b.fertilityImpact-a.fertilityImpact)[0];
+        }
+        const sorted = [...this.crops].sort((a,b)=>a.fertilityImpact-b.fertilityImpact);
+        for (let crop of sorted) {
+          if (this.soilFertility + crop.fertilityImpact >= 0.2) return crop;
+        }
+        return null;
+      }
+
+      plantCrop(crop) {
+        this.soilFertility += crop.fertilityImpact;
+        if (this.soilFertility < 0) this.soilFertility = 0;
+      }
+    }
+
+    let rotation = null;
+
+    const soilFertilityElem = document.getElementById('soil-fertility');
+    const fertilityBarElem = document.getElementById('fertility-bar');
+    const cropNameElem = document.getElementById('crop-name');
+    const suggestBtn = document.getElementById('suggest-crop');
+    const fertilityStatusDiv = document.getElementById('fertility-status');
+    const suggestionDiv = document.getElementById('suggestion');
+    const errorMsg = document.getElementById('error-msg');
+    const setFertilityBtn = document.getElementById('set-fertility-btn');
+    const initialFertilityInput = document.getElementById('initial-fertility');
+    const historyContainer = document.getElementById('history-container');
+    const historyList = document.getElementById('history-list');
+
+    function updateFertilityDisplay(fertility) {
+      soilFertilityElem.textContent = fertility.toFixed(2);
+
+      // Set bar width and color
+      const percent = fertility * 100;
+      fertilityBarElem.style.width = percent + '%';
+      fertilityBarElem.textContent = percent.toFixed(0) + '%';
+      if (fertility > 0.7) fertilityBarElem.style.backgroundColor = '#4caf50';
+      else if (fertility > 0.4) fertilityBarElem.style.backgroundColor = '#ff9800';
+      else fertilityBarElem.style.backgroundColor = '#f44336';
+    }
+
+    setFertilityBtn.addEventListener('click', () => {
+      const val = parseFloat(initialFertilityInput.value);
+      if (isNaN(val) || val < 0 || val > 1) {
+        errorMsg.textContent = 'Please enter a valid number between 0 and 1.';
+        fertilityStatusDiv.style.display = 'none';
+        suggestionDiv.style.display = 'none';
+        suggestBtn.style.display = 'none';
+        historyContainer.style.display = 'none';
+        return;
+      }
+      errorMsg.textContent = '';
+      rotation = new CropRotation(val);
+      updateFertilityDisplay(rotation.soilFertility);
+      cropNameElem.textContent = 'None';
+      historyList.innerHTML = '';
+      fertilityStatusDiv.style.display = 'block';
+      suggestionDiv.style.display = 'block';
+      suggestBtn.style.display = 'inline-block';
+      historyContainer.style.display = 'block';
+    });
+
+    suggestBtn.addEventListener('click', () => {
+      if (!rotation) return;
+      const nextCrop = rotation.getNextCrop();
+      if (nextCrop) {
+        rotation.plantCrop(nextCrop);
+        updateFertilityDisplay(rotation.soilFertility);
+        cropNameElem.textContent = nextCrop.name;
+        const li = document.createElement('li');
+        li.textContent = nextCrop.name + ` (fertility now: ${rotation.soilFertility.toFixed(2)})`;
+        historyList.appendChild(li);
+      } else {
+        cropNameElem.textContent = 'No suitable crop found. Consider planting legumes to restore fertility.';
+      }
+    });
+  </script>
+</body>
+</html>

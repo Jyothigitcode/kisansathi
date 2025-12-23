@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Crop Tracker – Login / Signup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: clamp(14px, 2vw, 18px); }
+    body {
+      height: 100vh;
+      font-family: 'Patrick Hand', cursive;
+      display: flex;
+      overflow: hidden;
+      position: relative;
+      background: url('https://static.vecteezy.com/system/resources/thumbnails/031/696/655/small_2x/sprawling-agricultural-farm-featuring-fields-of-crops-ai-generated-photo.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    body::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.35); z-index: 0;
+    }
+    .left-side, .right-side { flex: 1; position: relative; z-index: 1; }
+    .right-side { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 30px; }
+    .form-container {
+      position: relative; z-index: 10; max-width: 400px; width: 100%;
+      background: white; padding: 35px 30px; border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12); border: 2px solid #8d6e63;
+      animation: slideFade 0.6s ease-out;
+    }
+    @keyframes slideFade { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+    .form-container h2 { text-align: center; margin-bottom: 25px; color: #4e342e; font-size: 2em; }
+    .form-container input {
+      width: 100%; padding: 12px 40px; margin-bottom: 18px;
+      border: 1px solid #8d6e63; border-radius: 8px; font-size: 16px;
+      background-color: #fffde7; background-repeat: no-repeat;
+      background-position: 10px center; transition: border-color 0.3s, background-color 0.3s;
+    }
+    input[type="email"] { background-image: url('https://img.icons8.com/ios-filled/20/000000/email.png'); }
+    input[type="password"] { background-image: url('https://img.icons8.com/ios-filled/20/000000/lock.png'); }
+    input:focus { border-color: #558b2f; background-color: #f1f8e9; outline: none; }
+    .form-container button {
+      width: 100%; padding: 12px; font-size: 18px; border: none; border-radius: 8px;
+      color: white; background: linear-gradient(to right, #8bc34a, #558b2f);
+      cursor: pointer; transition: background-color 0.3s, transform 0.2s;
+    }
+    .form-container button:hover { background-color: #689f38; transform: translateY(-2px); box-shadow: 0 0 10px rgba(139, 195, 74, 0.4); }
+    .form-container .link { margin-top: 15px; text-align: center; font-size: 15px; color: #4e342e; }
+    .form-container .link a { color: #33691e; text-decoration: none; font-weight: bold; cursor: pointer; }
+    .form-container .link a:hover { text-decoration: underline; }
+    .error-msg { color: #c62828; text-align: center; margin-bottom: 15px; font-size: 15px; display: none; }
+    .forgot-password { text-align: right; margin-top: -10px; margin-bottom: 15px; font-size: 14px; }
+    .forgot-password a { color: #33691e; text-decoration: none; font-weight: bold; }
+    .forgot-password a:hover { text-decoration: underline; }
+    #resetForm { display: none; }
+    .reset-msg { color: #2e7d32; text-align: center; margin-bottom: 15px; font-size: 15px; }
+    @media (max-width: 900px) {
+      body { flex-direction: column; }
+      .left-side, .right-side { flex: none; width: 100%; height: 50vh; }
+      .form-container { max-width: 90%; margin: auto; padding: 25px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="left-side"></div>
+  <div class="right-side">
+    <!-- Auth Form -->
+    <form class="form-container" id="authForm" onsubmit="handleAuth(event)">
+      <h2 id="formTitle">🌱 Login to Your AI Crop Advisor</h2>
+      <div class="error-msg" id="authErrorMsg"></div>
+
+      <input type="text" id="fullNameInput" placeholder="Full Name" style="display:none;" autocomplete="name" />
+      <input type="email" id="authEmail" placeholder="Email" required autocomplete="email" />
+      <input type="password" id="authPassword" placeholder="Password" required autocomplete="current-password" />
+
+      <div class="forgot-password" id="forgotPasswordLink">
+        <a href="#" onclick="showResetForm()">Forgot Password?</a>
+      </div>
+
+      <button type="submit" id="authButton">Login</button>
+      <div class="link" id="toggleAuth">Don’t have an account? <a href="#" onclick="toggleForm()">Sign up</a></div>
+    </form>
+
+    <!-- Reset Form -->
+    <form class="form-container" id="resetForm" onsubmit="handleReset(event)">
+      <h2>Reset Your Password</h2>
+      <div class="reset-msg" id="resetMsg"></div>
+      <input type="email" id="resetEmail" placeholder="Enter your email" required />
+      <button type="submit">Send Reset Link</button>
+      <div class="link"><a href="#" onclick="showAuthForm()">Back to Login</a></div>
+    </form>
+  </div>
+
+  <script>
+    let inSignup = false;
+
+    function toggleForm() {
+      inSignup = !inSignup;
+      const title = document.getElementById("formTitle");
+      const button = document.getElementById("authButton");
+      const toggleLink = document.getElementById("toggleAuth");
+      const errorMsg = document.getElementById("authErrorMsg");
+      const fullNameInput = document.getElementById("fullNameInput");
+      const forgotPasswordLink = document.getElementById("forgotPasswordLink");
+
+      errorMsg.style.display = 'none';
+      errorMsg.textContent = '';
+
+      if (inSignup) {
+        title.textContent = "Create Your Account";
+        button.textContent = "Sign Up";
+        toggleLink.innerHTML = 'Already have an account? <a href="#" onclick="toggleForm()">Login</a>';
+        fullNameInput.style.display = 'block';
+        fullNameInput.setAttribute('required', true);
+        forgotPasswordLink.style.display = 'none';
+      } else {
+        title.textContent = "🌱 Login to Your AI Crop Advisor";
+        button.textContent = "Login";
+        toggleLink.innerHTML = 'Don’t have an account? <a href="#" onclick="toggleForm()">Sign up</a>';
+        fullNameInput.style.display = 'none';
+        fullNameInput.removeAttribute('required');
+        forgotPasswordLink.style.display = 'block';
+      }
+    }
+
+    async function handleAuth(event) {
+      event.preventDefault();
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value.trim();
+      const fullName = document.getElementById("fullNameInput").value.trim();
+      const errorMsg = document.getElementById("authErrorMsg");
+
+      errorMsg.style.display = 'none';
+      try {
+        const endpoint = inSignup
+          ? "http://127.0.0.1:5000/auth/signup"
+          : "http://127.0.0.1:5000/auth/login";
+
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ fullName, email, password })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          // ✅ Success
+          errorMsg.style.display = "block";
+          errorMsg.style.color = "#2e7d32";
+          errorMsg.textContent = result.message;
+
+          // Only redirect after login (not signup)
+          if (!inSignup) {
+            window.location.href = "/mainpage"; // your Flask route for main page
+          }
+
+        } else {
+          // ❌ Error
+          errorMsg.style.display = "block";
+          errorMsg.style.color = "#c62828";
+          errorMsg.textContent = result.message;
+        }
+      } catch {
+        errorMsg.style.display = "block";
+        errorMsg.style.color = "#c62828";
+        errorMsg.textContent = "Server error. Try again.";
+      }
+    }
+
+    function showResetForm() {
+      document.getElementById("authForm").style.display = "none";
+      document.getElementById("resetForm").style.display = "block";
+    }
+    function showAuthForm() {
+      document.getElementById("authForm").style.display = "block";
+      document.getElementById("resetForm").style.display = "none";
+    }
+
+    async function handleReset(event) {
+      event.preventDefault();
+      const resetEmail = document.getElementById("resetEmail").value.trim();
+      const resetMsg = document.getElementById("resetMsg");
+
+      try {
+        const response = await fetch("http://127.0.0.1:5000/auth/reset", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: resetEmail })
+        });
+        const result = await response.json();
+        resetMsg.style.color = response.ok ? "#2e7d32" : "#c62828";
+        resetMsg.textContent = result.message;
+      } catch {
+        resetMsg.style.color = "#c62828";
+        resetMsg.textContent = "Server error. Try again.";
+      }
+    }
+  </script>
+</body>
+</html>

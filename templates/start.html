@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CropSmart - Splash</title>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* Reset & font */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #dbe6d5, #a8d5ba);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Background blobs */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.4;
+      z-index: 0;
+      animation: blobMove 20s ease-in-out infinite alternate;
+    }
+
+    .blob1 {
+      width: 300px;
+      height: 300px;
+      background: #aed9c6;
+      top: -80px;
+      left: -80px;
+    }
+
+    .blob2 {
+      width: 250px;
+      height: 250px;
+      background: #d0f0c0;
+      bottom: -70px;
+      right: -60px;
+      animation-delay: 5s;
+    }
+
+    .splash-container {
+      text-align: center;
+      animation: fadeInZoom 2s ease-in-out forwards;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo-box {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 25px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      background-image: url('https://png.pngtree.com/png-clipart/20230928/original/pngtree-agriculture-logo-icon-design-illustration-crop-land-growth-vector-png-image_12898330.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .app-title {
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: #2e7d32;
+      opacity: 0;
+      animation: fadeIn 2s ease-in-out 1.2s forwards;
+    }
+
+    /* Animated SVG Plant */
+    .plant-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: auto;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .plant-container svg {
+      width: 200px;
+      height: auto;
+      animation: grow 3s ease-out forwards;
+      transform-origin: bottom center;
+      opacity: 0;
+    }
+
+    @keyframes grow {
+      0% {
+        transform: scaleY(0.1);
+        opacity: 0;
+      }
+      100% {
+        transform: scaleY(1);
+        opacity: 1;
+      }
+    }
+
+    /* Other animations */
+    @keyframes fadeInZoom {
+      0% {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes blobMove {
+      0% {
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        transform: translateY(30px) scale(1.05);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating background blobs -->
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+
+  <!-- Main content -->
+  <div class="splash-container">
+    <div class="logo-box"></div>
+    <div class="app-title">Welcome to Kisaan sathi</div>
+  </div>
+
+  <!-- SVG Animated Plant -->
+  <div class="plant-container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+      <g fill="#388e3c">
+        <path d="M32 64c1-14 1-23 0-37 0-1-2-1-2 0-1 14-1 23 0 37h2z"/>
+        <path d="M32 32c3-6 8-10 14-12-6 6-10 10-14 12z"/>
+        <path d="M32 32c-3-6-8-10-14-12 6 6 10 10 14 12z"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Redirect after 5 seconds -->
+  <script>
+    setTimeout(() => {
+      window.location.href = "login"; // Your login page
+    }, 5000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crop Recommendation</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 40px;
+      background-color: #e8f5e9;
+      color: #333;
+    }
+
+    h1 {
+      color: #1b5e20;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .form-section {
+      flex: 1;
+      min-width: 300px;
+      max-width: 500px;
+    }
+
+   .output {
+  flex: 1;
+  min-width: 300px;
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 10px;
+  border: 1px solid #c8e6c9;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  height: 90vh; /* 90% of viewport height */
+  /* overflow-y removed */
+}
+
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: 600;
+      color: #2e7d32;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 6px;
+      border: 1px solid #bdbdbd;
+      background-color: #fff;
+      transition: border 0.3s ease;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    select:focus, input:focus {
+      border-color: #43a047;
+      outline: none;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 12px 25px;
+      background-color: #2e7d32;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1b5e20;
+    }
+
+    .output h3 {
+      margin-top: 0;
+      color: #2e7d32;
+    }
+
+    ul {
+      list-style-type: disc;
+      margin-left: 25px;
+      margin-top: 10px;
+    }
+
+    .crop-card {
+      width: 150px;
+      text-align: center;
+      background: #f1f8e9;
+      padding: 12px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .crop-card img {
+      width: 100%;
+      height: 100px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid #c8e6c9;
+    }
+
+    .details {
+      text-align: left;
+      font-size: 14px;
+      color: #2e7d32;
+      line-height: 1.3;
+    }
+
+    .details strong {
+      color: #1b5e20;
+    }
+
+    .crop-container { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 20px; 
+    }
+
+    @media (max-width: 800px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .crop-card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1><center>🌱 Real Time Soil Properties</center></h1>
+
+  <div class="container">
+    <!-- Form Section -->
+    <div class="form-section">
+      <label for="ph">Soil pH Level:</label>
+      <input type="number" id="ph" min="3" max="9" step="0.1" value="6.5"/>
+
+      <label for="nitrogen">Nitrogen Level:</label>
+      <select id="nitrogen">
+        <option>Low</option>
+        <option>Medium</option>
+        <option>High</option>
+      </select>
+
+      <label for="phosphorus">Phosphorus Level:</label>
+      <select id="phosphorus">
+        <option>Low</option>
+        <option>Medium</option>
+        <option>High</option>
+      </select>
+
+      <label for="potassium">Potassium Level:</label>
+      <select id="potassium">
+        <option>Low</option>
+        <option>Medium</option>
+        <option>High</option>
+      </select>
+
+      <label for="soilType">Soil Type:</label>
+      <select id="soilType">
+        <option>Sandy</option>
+        <option>Loamy</option>
+        <option>Clayey</option>
+      </select>
+
+      <label for="water">Water Availability:</label>
+      <select id="water">
+        <option>Low</option>
+        <option>Medium</option>
+        <option>High</option>
+      </select>
+
+      <button onclick="recommend()">Recommend Crops</button>
+    </div>
+
+    <!-- Output Section -->
+    <div class="output" id="output">
+      <p>🛈 Fill in the form and click "Recommend Crops" to see suggestions here.</p>
+    </div>
+  </div>
+
+<script>
+  function recommend() {
+    const ph = parseFloat(document.getElementById('ph').value);
+    const nitrogen = document.getElementById('nitrogen').value;
+    const phosphorus = document.getElementById('phosphorus').value;
+    const potassium = document.getElementById('potassium').value;
+    const soil = document.getElementById('soilType').value;
+    const water = document.getElementById('water').value;
+
+    let crops = [];
+    let suggestions = [];
+
+    // Crop Recommendation Logic
+    if (ph >= 6.0 && ph <= 7.5) {
+      if (water === "High") {
+        if (soil === "Loamy" || soil === "Clayey") {
+          crops.push("Rice", "Sugarcane", "Banana");
+        } else {
+          crops.push("Maize");
+        }
+      } else if (water === "Medium") {
+        if (soil === "Loamy") {
+          crops.push("Wheat", "Groundnut", "Cotton");
+        } else {
+          crops.push("Barley");
+        }
+      } else {
+        crops.push("Millet", "Chickpea", "Mustard");
+      }
+    } else {
+      crops.push("Sorghum", "Pulses", "Castor");
+    }
+
+    // Soil Improvement Suggestions
+    if (nitrogen === "Low") {
+      suggestions.push("Add Urea or Compost for Nitrogen");
+    }
+    if (phosphorus === "Low") {
+      suggestions.push("Use DAP or Rock Phosphate");
+    }
+    if (potassium === "Low") {
+      suggestions.push("Apply Muriate of Potash");
+    }
+
+    // Crop images (reliable links)
+    const cropImages = {
+  "Rice": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoxnlQk7pzPa30tVnn6AJpGx08wAYfbsJeyw&s",
+  "Sugarcane": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTisIhQ_hmOcWhom6ek--gBmIunCI7V4R0t-A&s",
+  "Banana":"https://thumbs.dreamstime.com/b/banana-bunch-hanging-palm-tree-ai-generative-design-background-instagram-facebook-wall-painting-art-backgrounds-wallpaper-325270238.jpg",
+  "Maize": "https://t4.ftcdn.net/jpg/16/88/54/05/360_F_1688540534_2fK2nvtkKIqK5NknXiRjOoGl550HzZZJ.jpg",
+  "Wheat": "https://articles-1mg.gumlet.io/articles/wp-content/uploads/2017/02/rsz_shutterstock_291146909.jpg?compress=true&quality=80&w=640&dpr=2.6",
+  "Groundnut": "https://cdn.wikifarmer.com/images/detailed/2023/07/Groundnut-Plant-Information-History-Uses-and-Nutrition-Value.jpg",
+  "Cotton": "https://media.istockphoto.com/id/1452266868/photo/cotton-plant.jpg?s=612x612&w=0&k=20&c=mtNsON32zUjlYDFN2P-cqu8B5p8I2n2OFR-a1HWdpJQ=",
+  "Barley": "https://2.wlimg.com/product_images/bc-full/2024/12/14061887/watermark/premium-barley-grain-1733380917-7720410.jpeg",
+  "Millet": "https://thumbs.dreamstime.com/b/discover-remarkable-world-millets-captivating-close-up-macro-photography-each-grain-meticulously-captured-353642214.jpg",
+  "Chickpea": "https://plus.unsplash.com/premium_photo-1675237624857-7d995e29897d?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2hpY2twZWFzfGVufDB8fDB8fHww",
+  "Mustard": "https://nuttyyogi.com/cdn/shop/products/MustardSeeds.png?v=1680767117",
+  "Sorghum": "https://www.sorghumcheckoff.com/wp-content/uploads/2021/09/sorghum-01.png",
+  "Pulses": "https://sustainablefoodtrust.org/wp-content/uploads/2022/02/Pulses-1.jpg",
+  "Castor": "https://media.istockphoto.com/id/486714852/photo/green-buds-of-castor-oil-plant-ricinus-communis.jpg?s=612x612&w=0&k=20&c=mms9HvHbF-gkUJrwHnNSkRg2Z_xSwcGUeuN-CypxohQ="
+};
+    // Additional info: fertilizers, pesticides, other tips for each crop
+    const cropDetails = {
+      "Rice": {
+        fertilizers: ["Nitrogen (Urea)", "Phosphorus (DAP)", "Potassium (Muriate of Potash)"],
+        pesticides: ["Brown planthopper control", "Blast disease management"],
+        tips: "Requires standing water and warm climate."
+      },
+      "Sugarcane": {
+        fertilizers: ["Nitrogen", "Phosphorus", "Potassium"],
+        pesticides: ["Termite control", "Top shoot borer management"],
+        tips: "Prefers well-drained loamy soils."
+      },
+      "Banana": {
+        fertilizers: ["Nitrogen", "Potassium (Muriate of Potash)"],
+        pesticides: ["Banana weevil control", "Panama disease management"],
+        tips: "Needs high water availability and warm climate."
+      },
+      "Maize": {
+        fertilizers: ["Nitrogen", "Phosphorus"],
+        pesticides: ["Fall armyworm control", "Aphid management"],
+        tips: "Requires well-drained fertile soils."
+      },
+      "Wheat": {
+        fertilizers: ["Nitrogen", "Phosphorus"],
+        pesticides: ["Rust control", "Aphid management"],
+        tips: "Grows best in well-drained loamy soil."
+      },
+      "Groundnut": {
+        fertilizers: ["Phosphorus", "Potassium"],
+        pesticides: ["Aphid control", "Leaf spot management"],
+        tips: "Requires sandy loam soils and moderate water."
+      },
+      "Cotton": {
+        fertilizers: ["Nitrogen", "Phosphorus", "Potassium"],
+        pesticides: ["Bollworm control", "Aphid management"],
+        tips: "Prefers well-drained, deep loamy soils."
+      },
+      "Barley": {
+        fertilizers: ["Nitrogen", "Phosphorus"],
+        pesticides: ["Powdery mildew control", "Aphid management"],
+        tips: "Tolerates a range of soils but prefers well-drained."
+      },
+      "Millet": {
+        fertilizers: ["Nitrogen"],
+        pesticides: ["Shoot fly control", "Stem borer management"],
+        tips: "Drought tolerant crop suitable for low fertility soils."
+      },
+      "Chickpea": {
+        fertilizers: ["Phosphorus"],
+        pesticides: ["Pod borer control", "Ascochyta blight management"],
+        tips: "Grows well in well-drained loamy soils."
+      },
+      "Mustard": {
+        fertilizers: ["Nitrogen", "Phosphorus"],
+        pesticides: ["Aphid control", "White rust management"],
+        tips: "Prefers well-drained fertile soils."
+      },
+      "Sorghum": {
+        fertilizers: ["Nitrogen", "Phosphorus"],
+        pesticides: ["Shoot fly control", "Stem borer management"],
+        tips: "Drought tolerant, grows well in varied soils."
+      },
+      "Pulses": {
+        fertilizers: ["Phosphorus"],
+        pesticides: ["Pod borer control", "Rust management"],
+        tips: "Fixes nitrogen in soil, prefers loamy soils."
+      },
+      "Castor": {
+        fertilizers: ["Nitrogen", "Phosphorus", "Potassium"],
+        pesticides: ["Castor semilooper control"],
+        tips: "Thrives in well-drained, fertile soils."
+      }
+    };
+
+    // Build output
+    let output = `<h3><center>✅ Recommended Crops:</center></h3><div class="crop-container">`;
+    crops.forEach(crop => {
+      const imgSrc = cropImages[crop] || "https://via.placeholder.com/150?text=" + crop;
+      const details = cropDetails[crop] || {fertilizers: [], pesticides: [], tips: "No additional info available."};
+
+      output += `
+        <div class="crop-card">
+          <img src="${imgSrc}" alt="${crop}" onerror="this.src='https://via.placeholder.com/150?text=${crop}'"/>
+          <strong>${crop}</strong>
+          <div class="details">
+            <p><strong>Fertilizers:</strong> ${details.fertilizers.length > 0 ? details.fertilizers.join(", ") : "N/A"}</p>
+            <p><strong>Pesticides:</strong> ${details.pesticides.length > 0 ? details.pesticides.join(", ") : "N/A"}</p>
+            <p><strong>Tips:</strong> ${details.tips}</p>
+          </div>
+        </div>
+      `;
+    });
+    output += `</div>`;
+
+    // Soil improvement suggestions
+    if (suggestions.length > 0) {
+      output += `<h3>⚠️ Soil Improvement Tips:</h3><ul>`;
+      suggestions.forEach(s => {
+        output += `<li>${s}</li>`;
+      });
+      output += `</ul>`;
+    } else {
+      output += `<p>✅ Soil nutrients are sufficient!</p>`;
+    }
+
+    document.getElementById('output').innerHTML = output;
+  }
+</script>
+
+</body>
+</html>

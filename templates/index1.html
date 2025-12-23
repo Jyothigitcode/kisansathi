@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vegetable Price Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 400px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            box-shadow: 0 0 10px #ccc;
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form label {
+            display: inline-block;
+            width: 100px;
+            padding: 6px 0;
+        }
+
+        form input[type="text"],
+        form input[type="number"],
+        form select {
+            width: 250px;
+            padding: 6px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background: #007BFF;
+            color: white;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        form input[type="submit"]:hover {
+            background: #0056b3;
+        }
+
+        h2 {
+            text-align: center;
+            color: green;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Predict Vegetable Price</h1>
+        <form action="/predict-veg-price" method="post">
+            <label>Year:</label>
+            <input type="number" name="year" required><br>
+
+            <label>Month:</label>
+            <select name="month" required>
+                <option value="">--Select Month--</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select><br>
+
+            <label>Day:</label>
+            <select name="day" required>
+                <option value="">--Select Day--</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+            </select><br>
+
+            <label>State:</label><input type="text" name="state" required><br>
+            <label>District:</label><input type="text" name="district" required><br>
+            <label>Market:</label><input type="text" name="market" required><br>
+            <label>Commodity:</label><input type="text" name="commodity" required><br>
+            <label>Variety:</label><input type="text" name="variety" required><br>
+            <label>Grade:</label><input type="text" name="grade" required><br>
+
+            <input type="submit" value="Predict Price">
+        </form>
+
+       {% if veg_prediction %}
+           <h2>Predicted Price: ₹{{ veg_prediction }}</h2>
+       {% endif %}
+
+    </div>
+</body>
+</html>

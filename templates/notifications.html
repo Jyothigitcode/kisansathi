@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - Crop Advisor</title>
+    <style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-image: url('https://tse1.mm.bing.net/th/id/OIP.yL-mZBh9uCONFDALehgyCQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+    }
+    header {
+        background-color: rgba(76, 175, 80, 0.85);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 1.8rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        backdrop-filter: blur(5px);
+    }
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    .notification-card {
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 12px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .notification-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    .notification-card span {
+        font-weight: bold;
+        color: #4caf50;
+    }
+    .no-notifications {
+        text-align: center;
+        color: #fff;
+        margin-top: 50px;
+        font-size: 1.2rem;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+    }
+</style>
+</head>
+<body>
+    <header>📋 My Crop Notifications</header>
+    <div class="container" id="notifications-container">
+        <div class="no-notifications">Loading notifications...</div>
+    </div>
+
+    <script>
+        async function fetchNotifications() {
+            try {
+                const res = await fetch('/notifications');
+                const data = await res.json();
+                const container = document.getElementById('notifications-container');
+                container.innerHTML = ''; // clear loader
+
+                if (data.notifications.length === 0) {
+                    container.innerHTML = `<div class="no-notifications">No notifications available!</div>`;
+                    return;
+                }
+
+                data.notifications.forEach(notif => {
+                    const card = document.createElement('div');
+                    card.className = 'notification-card';
+                    card.innerHTML = `<span>${notif}</span>`;
+                    container.appendChild(card);
+                });
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('notifications-container').innerHTML = `<div class="no-notifications">Error loading notifications.</div>`;
+            }
+        }
+
+        fetchNotifications();
+    </script>
+</body>
+</html>

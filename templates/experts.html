@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agriculture Experts - AI Kisan Sakthi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f4f9f4;
+    }
+
+    /* 🌟 Header */
+    header {
+      background: linear-gradient(135deg, #006400, #28a745);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .header-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 8%;   /* 🔹 Reduced header height */
+      text-align: center;
+    }
+    .logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;  /* 🔹 Slightly reduced gap */
+    }
+    .logo h1 {
+      margin: 0;
+      font-size: 22px;  /* 🔹 Slightly smaller title */
+      font-weight: bold;
+    }
+    .tagline {
+      font-size: 12px;  /* 🔹 Smaller tagline */
+      color: #e0ffe0;
+      margin: 0;
+    }
+
+    /* 🌟 Main Body */
+    .main-section {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+    .main-section h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: #2e7d32;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      padding: 15px;
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card img {
+      width: 100%;
+      max-width: 220px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: pointer; /* Indicate clickable */
+    }
+    .card h3 {
+      margin: 10px 0 4px;
+      color: #2e7d32;
+      font-size: 20px;
+    }
+    .card p {
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* 🌟 Responsive */
+    @media (max-width: 900px) {
+      .container { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .container { grid-template-columns: 1fr; }
+      .header-container { flex-direction: column; }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+  <!-- 🌟 Header -->
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <h1>AI Kisan Sakthi</h1>
+        <p class="tagline">Empowering Farmers with AI 🌱</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- 🌟 Main Body -->
+  <section class="main-section">
+    <h2>Meet Our Agriculture Experts</h2>
+    <div class="container">
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/20028.jpg" alt="Dr. Bharat Sign" onclick="window.location.href='/expert1'">
+        <h3>Dr. Bharat Sign</h3>
+        <p class="role">Agriculture Scientist</p>
+        <p class="desc">Specializes in sustainable farming practices and crop improvement techniques.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/11130.jpg" alt="Prof. Berliner J" onclick="window.location.href='/expert2'">
+        <h3>Prof. Berliner J</h3>
+        <p class="role">Soil Specialist</p>
+        <p class="desc">Renowned for research on soil fertility management and nutrient analysis.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/11266.jpg" alt="Dr. Vivek Patel" onclick="window.location.href='/expert3'">
+        <h3>Dr. Dinesh Kumar</h3>
+        <p class="role">Crops Researcher</p>
+        <p class="desc">Expert in developing resilient crop varieties for diverse climates.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/10521.jpg" alt="Dr. Kavita Mehra" onclick="window.location.href='/expert4'">
+        <h3>Dr. Meera Bhatia</h3>
+        <p class="role">Plant Pathologist</p>
+        <p class="desc">Investigates plant diseases and innovative pest control methods.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/10858.jpg" alt="Dr. Anil Yadav" onclick="window.location.href='/expert5'">
+        <h3>Dr. Mukesh Kumar Dhillon</h3>
+        <p class="role">Irrigation Specialist</p>
+        <p class="desc">Focuses on efficient water management and modern irrigation technology.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/10475.jpg" alt="Prof. Neha Gupta" onclick="window.location.href='expert6.html'">
+        <h3>Prof. Nehash Gupta</h3>
+        <p class="role">Agro-Economist</p>
+        <p class="desc">Studies agricultural policy impacts and farm economics for rural development.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/10886.jpg" alt="Dr. Rajesh Nair" onclick="window.location.href='expert7.html'">
+        <h3>Dr. Rajesheswari Nair</h3>
+        <p class="role">Fertilizer Expert</p>
+        <p class="desc">Knowledgeable about organic and chemical fertilizer applications.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/21148.jpg" alt="Dr. Sneha Rao" onclick="window.location.href='expert8.html'">
+        <h3>Dr. Sankar Prasad</h3>
+        <p class="role">Seed Technology Expert</p>
+        <p class="desc">Promotes high-yielding seeds and genetic advancement in agriculture.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/10570.jpg" alt="Dr. Manish Verma" onclick="window.location.href='expert9.html'">
+        <h3>Dr. Sanjay Verma</h3>
+        <p class="role">Climate Scientist</p>
+        <p class="desc">Works on climate change adaptation strategies for farmers.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/10474.jpg" alt="Prof. Sunita Joshi" onclick="window.location.href='expert10.html'">
+        <h3>Prof. Sunita Joshi</h3>
+        <p class="role">Organic Farming Expert</p>
+        <p class="desc">Advocates for organic techniques and eco-friendly farm inputs.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/10532.jpg" alt="Dr. Arun Khanna" onclick="window.location.href='expert11.html'">
+        <h3>Dr. Aruna Kumari</h3>
+        <p class="role">Pest Control Specialist</p>
+        <p class="desc">Develops sustainable pest management solutions for crops.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/10871.jpg" alt="Dr. Priya Reddy" onclick="window.location.href='expert12.html'">
+        <h3>Dr. Raghu Reddy</h3>
+        <p class="role">Dairy Farming Specialist</p>
+        <p class="desc">Improves livestock nutrition and dairy production efficiency.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/106000.jpg" alt="Prof. Sanjay Malhotra" onclick="window.location.href='expert13.html'">
+        <h3>Prof. Sanjay Malhotra</h3>
+        <p class="role">Horticulture Scientist</p>
+        <p class="desc">Expert in fruit and vegetable crop management and greenhouse systems.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/10428.jpg" alt="Dr. Deepa Iyer" onclick="window.location.href='expert14.html'">
+        <h3>Dr. Deepak Iyer</h3>
+        <p class="role">Soil Fertility Expert</p>
+        <p class="desc">Specialist in soil amendments and sustainable land use.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/10465.jpg" alt="Dr. Gopal Menon" onclick="window.location.href='expert15.html'">
+        <h3>Dr. Sunitha Menon</h3>
+        <p class="role">Agroforestry Specialist</p>
+        <p class="desc">Integrates trees and crops for enhanced farm outcomes.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/10556.jpg" alt="Dr. Meera Bhatia" onclick="window.location.href='expert16.html'">
+        <h3>Dr. Neeraj Sign</h3>
+        <p class="role">Water Management Expert</p>
+        <p class="desc">Designs innovative water conservation and irrigation schemes.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/21137.jpg" alt="Prof. Rohit Singh" onclick="window.location.href='expert17.html'">
+        <h3>Prof. Neelima Deshmukh</h3>
+        <p class="role">Agricultural Engineer</p>
+        <p class="desc">Focuses on mechanization and g
+        <p class="role">Food Scientist</p>
+        <p class="desc">Improves food processing methods and crop storage solutions.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/10741.jpg" alt="Dr. Suresh Pawar" onclick="window.location.href='expert19.html'">
+        <h3>Dr. Suresh Pawar</h3>
+        <p class="role">Livestock Specialist</p>
+        <p class="desc">Advances sustainable livestock management and breeding programs.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/10547.jpg"" alt="Prof. Ananya Das" onclick="window.location.href='expert20.html'">
+        <h3>Prof. Pankaj</h3>
+        <p class="role">Plant Breeding Expert</p>
+        <p class="desc">Develops high-yield plant varieties using advanced genetics.</p>
+      </div>
+      <div class="card">
+        <img src="https://www.iari.res.in/sci_db/photo/10552.jpg" alt="Prof. Rohit Singh" onclick="window.location.href='expert17.html'">
+        <h3>Prof. Sangeetha Paul</h3>
+        <p class="role">Agricultural Engineer</p>
+        <p class="desc">Focuses on mechanization and g
+        <p class="role">Food Scientist</p>
+        <p class="desc">Improves food processing methods and crop storage solutions.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="social" style="text-align:center; margin:20px;">
+    <a href="#"><i class="fab fa-facebook"></i></a>
+    <a href="#"><i class="fab fa-twitter"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-whatsapp"></i></a>
+  </div>
+</body>
+</html>

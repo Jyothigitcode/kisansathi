@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>🌾 Farmer Community Chat</title>
+<style>
+body { font-family: "Poppins", sans-serif; background: #f0f4f9; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+.chat-container { width: 100%; max-width: 500px; background: #fff; border-radius: 10px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; height: 90vh; overflow: hidden; }
+.chat-header { background: #128c7e; color: white; padding: 14px; font-size: 16px; font-weight: bold; text-align: center; }
+.chat-box { flex: 1; padding: 16px; overflow-y: auto; background: #ece5dd; display: flex; flex-direction: column; }
+.message-wrapper { margin: 6px 0; max-width: 70%; word-wrap: break-word; position: relative; }
+.sent-wrapper { align-self: flex-end; text-align: right; }
+.received-wrapper { align-self: flex-start; text-align: left; }
+.message { padding: 10px 14px; border-radius: 7.5px; font-size: 14px; white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; }
+.sent { background: #d9fdd3; }
+.received { background: #fff; }
+.sender-name { font-size: 12px; font-weight: bold; color: #075e54; margin-bottom: 3px; }
+.time { font-size: 10px; color: #666; margin-top: 4px; text-align: right; }
+.chat-input { display: flex; padding: 10px; border-top: 1px solid #ccc; background: #f0f2f5; }
+.chat-input input { flex: 1; padding: 10px; border: none; border-radius: 20px; outline: none; font-size: 14px; background: #fff; margin-right: 10px; }
+.chat-input button { background: #25d366; border: none; color: white; padding: 10px 16px; border-radius: 50%; cursor: pointer; font-size: 16px; }
+.chat-input button:hover { background: #1ebd5a; }
+.message-wrapper button { font-size: 10px; margin-left: 5px; cursor: pointer; background: transparent; border: none; color: red; }
+</style>
+</head>
+<body>
+
+<div class="chat-container">
+  <div class="chat-header">🌾 Farmer Community - {{username}}</div>
+  <div class="chat-box" id="chatBox"></div>
+  <div class="chat-input">
+    <input type="text" id="messageInput" placeholder="Type your message..." />
+    <button onclick="sendMessage()">➤</button>
+  </div>
+</div>
+
+<script>
+const username = "{{username}}";
+
+async function fetchMessages() {
+  const res = await fetch('/get_messages');
+  const data = await res.json();
+  const chatBox = document.getElementById('chatBox');
+  chatBox.innerHTML = '';
+  data.forEach(msg => addMessageToDOM(msg));
+}
+
+function addMessageToDOM(msg) {
+  const chatBox = document.getElementById('chatBox');
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('message-wrapper', msg.username === username ? 'sent-wrapper' : 'received-wrapper');
+
+  const bubble = document.createElement('div');
+  bubble.classList.add(msg.username === username ? 'sent' : 'received');
+
+  const senderDiv = document.createElement('div');
+  senderDiv.classList.add('sender-name');
+  senderDiv.textContent = msg.username;
+  bubble.appendChild(senderDiv);
+
+  const messageDiv = document.createElement('div');
+  messageDiv.classList.add('message');
+  messageDiv.textContent = msg.text;
+  bubble.appendChild(messageDiv);
+
+  const timeDiv = document.createElement('div');
+  timeDiv.classList.add('time');
+  timeDiv.textContent = new Date(msg.timestamp).toLocaleTimeString();
+  bubble.appendChild(timeDiv);
+
+  // Edit/Delete buttons for own messages
+  if(msg.username === username){
+    const editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit';
+    editBtn.onclick = () => editMessage(msg._id);
+    const delBtn = document.createElement('button');
+    delBtn.textContent = 'Delete';
+    delBtn.onclick = () => deleteMessage(msg._id);
+    bubble.appendChild(editBtn);
+    bubble.appendChild(delBtn);
+  }
+
+  wrapper.appendChild(bubble);
+  chatBox.appendChild(wrapper);
+  chatBox.scrollTo({top: chatBox.scrollHeight, behavior: 'smooth'});
+}
+
+async function sendMessage() {
+  const input = document.getElementById('messageInput');
+  const text = input.value.trim();
+  if(!text) return;
+  const res = await fetch('/send_message', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({text})
+  });
+  const data = await res.json();
+  addMessageToDOM(data);
+  input.value = '';
+}
+
+async function editMessage(id) {
+  const newText = prompt("Edit your message:");
+  if(newText){
+    await fetch(`/edit_message/${id}`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({text:newText})
+    });
+    fetchMessages();
+  }
+}
+
+async function deleteMessage(id){
+  if(confirm("Are you sure to delete?")){
+    await fetch(`/delete_message/${id}`, {method:'DELETE'});
+    fetchMessages();
+  }
+}
+
+// Auto refresh messages every 2 seconds
+setInterval(fetchMessages, 2000);
+window.onload = fetchMessages;
+
+document.getElementById("messageInput").addEventListener("keydown", function (e) {
+  if(e.key === "Enter"){ e.preventDefault(); sendMessage(); }
+});
+</script>
+</body>
+</html>

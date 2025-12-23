@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Farmer Buy & Sell Marketplace</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    header {
+      background-color: #388e3c;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      background-color: #2e7d32;
+      padding: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .section {
+      display: none;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    form {
+      display: grid;
+      gap: 10px;
+    }
+
+    input, select, textarea, button {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #388e3c;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+
+    button:hover {
+      background-color: #2e7d32;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .product-card img {
+      max-width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .product-card h3 {
+      margin: 10px 0 5px;
+    }
+
+    .product-card p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🌾 Farmer Buy & Sell Marketplace</h1>
+  </header>
+
+  <nav>
+    <a id="nav-sell">Sell</a>
+    <a id="nav-buy">Buy</a>
+    <a id="nav-mylistings">My Listings</a>
+  </nav>
+
+  <div class="container">
+    <!-- Sell Section -->
+    <div id="section-sell" class="section active">
+      <h2>📤 Post a Product for Sale</h2>
+      <form id="sellForm" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Product Name (e.g., Rice, Tomato)" required />
+        <input type="text" name="quantity" placeholder="Quantity (e.g., 100kg)" required />
+        <input type="text" name="price" placeholder="Price per unit (e.g., ₹20/kg)" required />
+        <input type="text" name="location" placeholder="Location (e.g., Nashik)" required />
+        <input type="date" name="harvest_date" />
+        <input type="tel" name="contact" placeholder="Contact Number" required />
+        <textarea name="description" placeholder="Product Description" rows="3"></textarea>
+        <input type="file" name="image" accept="image/*" />
+        <button type="submit">Post Product</button>
+      </form>
+    </div>
+
+    <!-- Buy Section -->
+    <div id="section-buy" class="section">
+      <h2>🛒 Browse Products for Purchase</h2>
+      <div class="products-grid" id="buyProductsGrid">
+        <p>Loading products...</p>
+      </div>
+    </div>
+
+    <!-- My Listings Section -->
+    <div id="section-mylistings" class="section">
+      <h2>📦 My Listings</h2>
+      <div id="myListingsGrid" class="products-grid">
+        <p>You have no listings yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sellForm = document.getElementById("sellForm");
+
+    sellForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(sellForm);
+
+        const res = await fetch("/post_product", { method: "POST", body: formData });
+        const data = await res.json();
+        alert(data.message);
+
+        sellForm.reset();
+        loadBuyProducts();
+        loadMyListings();
+    });
+
+    async function loadBuyProducts() {
+        const container = document.getElementById('buyProductsGrid');
+        container.innerHTML = '';
+        const res = await fetch("/products");
+        const products = await res.json();
+        if(products.length === 0) container.innerHTML = "<p>No products found.</p>";
+
+        products.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+              <img src="${p.image || 'https://via.placeholder.com/250x150'}" alt="${p.name}">
+              <h3>${p.name}</h3>
+              <p>Quantity: ${p.quantity}</p>
+              <p>Price: ${p.price}</p>
+              <p>Location: ${p.location}</p>
+              <p>Contact: ${p.contact}</p>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    async function loadMyListings() {
+        const container = document.getElementById('myListingsGrid');
+        container.innerHTML = '';
+        const res = await fetch("/my_products");
+        const products = await res.json();
+        if(products.length === 0) container.innerHTML = "<p>You have no listings yet.</p>";
+
+        products.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+              <img src="${p.image || 'https://via.placeholder.com/250x150'}" alt="${p.name}">
+              <h3>${p.name}</h3>
+              <p>Quantity: ${p.quantity}</p>
+              <p>Price: ${p.price}</p>
+              <p>Location: ${p.location}</p>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // Navigation buttons
+    document.getElementById('nav-sell').addEventListener('click', () => showSection('sell'));
+    document.getElementById('nav-buy').addEventListener('click', () => showSection('buy'));
+    document.getElementById('nav-mylistings').addEventListener('click', () => showSection('mylistings'));
+
+    const sections = {
+        sell: document.getElementById('section-sell'),
+        buy: document.getElementById('section-buy'),
+        mylistings: document.getElementById('section-mylistings'),
+    };
+
+    function showSection(name) {
+        for (const key in sections) {
+            sections[key].classList.remove('active');
+        }
+        sections[name].classList.add('active');
+        if(name === 'buy') loadBuyProducts();
+        if(name === 'mylistings') loadMyListings();
+    }
+
+    // Initial load
+    loadBuyProducts();
+    loadMyListings();
+  </script>
+</body>
+</html>

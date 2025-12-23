@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🌱 Crop Planner</title>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      margin: 0; 
+      background: linear-gradient(to right, #e0f7fa, #f1f8e9); 
+      padding: 20px;
+    }
+    h2 { text-align: center; color: #2e7d32; margin-bottom: 20px; }
+    label { font-weight: 600; margin-right: 10px; }
+    input[type=text], input[type=date] {
+      padding: 8px; border-radius: 8px; border: 1px solid #ccc;
+      margin-right: 10px; outline: none;
+      transition: 0.3s;
+    }
+    input[type=text]:focus, input[type=date]:focus { border-color: #43a047; }
+
+    button { 
+      padding: 10px 20px; 
+      border: none; border-radius: 8px; 
+      cursor: pointer; 
+      font-weight: 600; 
+      transition: 0.3s; 
+      margin-right: 10px;
+    }
+    button#generateBtn { background: #43a047; color: #fff; }
+    button#generateBtn:hover { background: #2e7d32; }
+    button#seeAllBtn { background: #0288d1; color: #fff; }
+    button#seeAllBtn:hover { background: #01579b; }
+
+    .tabs { display: flex; margin-top: 20px; border-bottom: 2px solid #ccc; }
+    .tab { padding: 10px 25px; cursor: pointer; border-radius: 8px 8px 0 0; margin-right: 5px; background: #b2dfdb; color: #004d40; font-weight: 600; }
+    .tab.active { background: #004d40; color: #fff; }
+    .tab-content { border: 2px solid #004d40; border-top: none; border-radius: 0 8px 8px 8px; padding: 15px; background: #ffffff; margin-bottom: 20px; }
+
+    .task-box { 
+      background: #e8f5e9; 
+      padding: 12px 15px; 
+      margin: 10px 0; 
+      border-left: 5px solid #43a047; 
+      border-radius: 8px; 
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: 0.2s;
+    }
+    .task-box:hover { background: #c8e6c9; }
+
+    /* Modal */
+    .modal { 
+      display: none; 
+      position: fixed; 
+      top: 0; left: 0; 
+      width: 100%; height: 100%; 
+      background: rgba(0,0,0,0.6); 
+      justify-content: center; 
+      align-items: center; 
+      z-index: 1000; 
+    }
+    .modal-content { 
+      background: #fff; 
+      padding: 20px; 
+      border-radius: 12px; 
+      width: 400px; 
+      max-width: 90%;
+      display: flex; 
+      flex-direction: column; 
+      gap: 15px;
+    }
+    .modal-content h3 { 
+      margin: 0; 
+      color: #2e7d32; 
+      text-align: center; 
+    }
+    .modal-buttons { 
+      display: flex; 
+      justify-content: flex-end; 
+      gap: 10px; 
+    }
+    .btn-save { 
+      background: #43a047; color: #fff; padding:8px 15px; border-radius:8px; font-weight:600; cursor:pointer; border:none; 
+    }
+    .btn-save:hover { background: #2e7d32; }
+    .btn-cancel { 
+      background: #dc3545; color: #fff; padding:8px 15px; border-radius:8px; font-weight:600; cursor:pointer; border:none; 
+    }
+    .btn-cancel:hover { background: #b71c1c; }
+
+    #calendar { max-width: 900px; margin: 20px auto; background: #fff; border-radius: 12px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <h2>🌱 Crop Planner</h2>
+  <div>
+    <label>Crop: <input type="text" id="crop" placeholder="Enter crop"></label>
+    <label>Sowing Date: <input type="date" id="sowing_date"></label>
+    <button id="generateBtn">Generate</button>
+    <button id="seeAllBtn">See Details</button>
+  </div>
+
+  <div class="tabs" id="resultsTabs" style="display:none;">
+    <div class="tab active" data-tab="tasks">Tasks</div>
+    <div class="tab" data-tab="seasons">Seasons</div>
+    <div class="tab" data-tab="fertilizers">Fertilizers</div>
+    <div class="tab" data-tab="pests">Pests</div>
+    <div class="tab" data-tab="notifications">Notifications</div>
+  </div>
+
+  <div id="tabContents">
+    <div class="tab-content" id="tasksTab"></div>
+    <div class="tab-content" id="seasonsTab" style="display:none;"></div>
+    <div class="tab-content" id="fertilizersTab" style="display:none;"></div>
+    <div class="tab-content" id="pestsTab" style="display:none;"></div>
+    <div class="tab-content" id="notificationsTab" style="display:none;"></div>
+  </div>
+
+  <div id="calendar"></div>
+
+  <!-- Modal -->
+  <div class="modal" id="taskModal">
+    <div class="modal-content">
+      <h3 id="modalTitle">Task</h3>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <input type="text" id="modalTask" placeholder="Task Name">
+        <input type="text" id="modalStage" placeholder="Stage">
+        <input type="date" id="modalDate">
+      </div>
+      <div class="modal-buttons">
+        <button class="btn-save" id="saveTaskBtn">Save</button>
+        <button class="btn-cancel" id="closeModalBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentTasks = [];
+    let calendar;
+    let editingTask = null;
+
+    async function fetchAllTasks() {
+      const res = await fetch("/all-tasks");
+      const data = await res.json();
+      currentTasks = data;
+      renderTasks(data);
+      renderCalendar();
+    }
+
+    document.getElementById('generateBtn').onclick = async () => {
+      const crop = document.getElementById('crop').value.trim();
+      const sowing_date = document.getElementById('sowing_date').value;
+      if (!crop || !sowing_date) { alert("Please enter crop and date"); return; }
+
+      const res = await fetch("/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ crop, sowing_date })
+      });
+      const data = await res.json();
+      if (data.error) { alert(data.error); return; }
+
+      await fetchAllTasks();
+
+      renderSeasons(data.seasons);
+      renderFertilizers(data.fertilizers);
+      renderPests(data.pests_diseases);
+      renderNotifications(data.notifications);
+
+      document.getElementById('resultsTabs').style.display = "flex";
+      showTab('tasks');
+    };
+
+    document.getElementById('seeAllBtn').onclick = fetchAllTasks;
+
+    function renderTasks(tasks) {
+      const div = document.getElementById('tasksTab');
+      div.innerHTML = "";
+      tasks.forEach(t => {
+        const box = document.createElement('div');
+        box.className = "task-box";
+        box.innerText = `${t.date}: ${t.task} (${t.stage})`;
+        div.appendChild(box);
+      });
+    }
+
+    function renderSeasons(seasons) { document.getElementById('seasonsTab').innerHTML = seasons.join(", "); }
+    function renderFertilizers(f) { document.getElementById('fertilizersTab').innerHTML = f.join(", "); }
+    function renderPests(p) { document.getElementById('pestsTab').innerHTML = p.join(", "); }
+    function renderNotifications(n) { document.getElementById('notificationsTab').innerHTML = n.join("<br>"); }
+
+    document.querySelectorAll('.tab').forEach(tab => { 
+      tab.onclick = () => { showTab(tab.dataset.tab); }; 
+    });
+    function showTab(tabName) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(c => c.style.display = "none");
+      document.getElementById(tabName + "Tab").style.display = "block";
+    }
+
+    function renderCalendar() {
+      if (calendar) calendar.destroy();
+      const calendarEl = document.getElementById('calendar');
+      calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: currentTasks.map(t => ({ title: t.task, start: t.date, extendedProps: t })),
+        dateClick: (info) => { openModal(null, info.dateStr); },
+        eventClick: (info) => { openModal(info.event.extendedProps); }
+      });
+      calendar.render();
+    }
+
+    function openModal(task, date) {
+      editingTask = task;
+      document.getElementById('taskModal').style.display = "flex";
+      if (task) {
+        document.getElementById('modalTitle').innerText = "Edit Task";
+        document.getElementById('modalTask').value = task.task;
+        document.getElementById('modalStage').value = task.stage;
+        document.getElementById('modalDate').value = task.date;
+      } else {
+        document.getElementById('modalTitle').innerText = "Add Task";
+        document.getElementById('modalTask').value = "";
+        document.getElementById('modalStage').value = "";
+        document.getElementById('modalDate').value = date;
+      }
+    }
+
+    document.getElementById('closeModalBtn').onclick = () => { 
+      document.getElementById('taskModal').style.display = "none"; 
+    };
+
+    document.getElementById('saveTaskBtn').onclick = async () => {
+      const task = { 
+        crop: "Manual", 
+        task: document.getElementById('modalTask').value, 
+        stage: document.getElementById('modalStage').value, 
+        date: document.getElementById('modalDate').value 
+      };
+      if (!task.task || !task.date) { alert("Task and Date are required"); return; }
+
+      if (editingTask) {
+        await fetch("/update-task", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ crop: editingTask.crop, task: editingTask.task, date: editingTask.date, new_date: task.date, new_task: task.task, new_stage: task.stage })
+        });
+      } else {
+        await fetch("/add-task", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(task)
+        });
+      }
+      document.getElementById('taskModal').style.display = "none";
+      await fetchAllTasks();
+    };
+
+    // Optional: close modal if clicked outside content
+    document.getElementById('taskModal').onclick = (e) => {
+      if (e.target.id === 'taskModal') document.getElementById('taskModal').style.display = "none";
+    };
+
+    fetchAllTasks();
+  </script>
+</body>
+</html>

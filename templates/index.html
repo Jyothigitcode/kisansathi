@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero-card" aria-labelledby="welcome-heading">
+  <div class="hero-left">
+    <h1 id="welcome-heading">Welcome to Cyber Awareness</h1>
+    <p class="lead">
+      This demo site contains safe, educational tools to teach cyber hygiene.
+      All tools require confirmation that you own the data or permission to test the target.
+    </p>
+
+    <div class="quick-actions" role="navigation" aria-label="Main modules">
+      <a class="cta-btn" href="/password">🔐 Password demo</a>
+      <a class="cta-btn" href="/integrity">🛡️ Integrity checker</a>
+      <a class="cta-btn" href="/yara">🔎 YARA scanner</a>
+    </div>
+
+    <p class="note">
+      Use these tools responsibly — only on systems you own or have explicit permission to test.
+    </p>
+  </div>
+
+  <div class="hero-right">
+    <div class="stat-cards" aria-hidden="false">
+      <div class="stat">
+        <div class="stat-value">6</div>
+        <div class="stat-label">Modules</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">Demo</div>
+        <div class="stat-label">Non-destructive</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">🚫</div>
+        <div class="stat-label">No live exploitation</div>
+      </div>
+    </div>
+
+    <div class="module-grid" aria-label="All modules list">
+      <a class="module-card" href="/password">
+        <strong>Password</strong>
+        <span>Strength check & demo cracking (safe)</span>
+      </a>
+
+      <a class="module-card" href="/integrity">
+        <strong>Integrity</strong>
+        <span>File verification & hashes</span>
+      </a>
+
+      <a class="module-card" href="/yara">
+        <strong>YARA</strong>
+        <span>Safe rule scanning examples</span>
+      </a>
+
+      <a class="module-card" href="/vuln">
+        <strong>Vulnerability</strong>
+        <span>Demo CVE matcher (sample DB)</span>
+      </a>
+
+      <a class="module-card" href="/webscan">
+        <strong>Web Scan</strong>
+        <span>Passive discovery & hints</span>
+      </a>
+
+      <a class="module-card" href="/bugbounty">
+        <strong>Bug Bounty</strong>
+        <span>Responsible disclosure & links</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Optional small chart to visualize demo coverage -->
+<section class="mini-chart card" aria-hidden="true">
+  <canvas id="homeModulesChart" height="120"></canvas>
+</section>
+
+<style>
+  /* Hero */
+  .hero-card {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 1.5rem;
+    align-items: start;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-left {
+    padding: 1.2rem;
+  }
+
+  .hero-right {
+    padding: 1.2rem;
+  }
+
+  .lead {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+    color: rgba(0,0,0,0.75);
+  }
+
+  body.dark .lead { color: rgba(255,255,255,0.9); }
+
+  .cta-btn {
+    display: inline-block;
+    margin: 0.25rem 0.5rem 0.25rem 0;
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    background: var(--accent);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform .16s ease, box-shadow .16s ease;
+  }
+
+  .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 18px rgba(0,0,0,0.12); }
+
+  .note { font-size: .9rem; color: rgba(0,0,0,0.6); margin-top: 0.75rem; }
+  body.dark .note { color: rgba(255,255,255,0.75); }
+
+  /* Stat cards */
+  .stat-cards { display:flex; gap: .6rem; margin-bottom:1rem; flex-wrap:wrap; }
+  .stat { background: rgba(0,0,0,0.04); padding: .6rem .9rem; border-radius: 10px; min-width: 100px; text-align:center; }
+  body.dark .stat { background: rgba(255,255,255,0.04); }
+  .stat-value { font-size: 1.25rem; font-weight:700; }
+  .stat-label { font-size: .85rem; color: rgba(0,0,0,0.6); }
+  body.dark .stat-label { color: rgba(255,255,255,0.75); }
+
+  /* Module grid */
+  .module-grid { display:grid; grid-template-columns:repeat(1, minmax(0,1fr)); gap:0.7rem; }
+  @media(min-width:720px) { .module-grid { grid-template-columns: repeat(2, 1fr); } }
+  .module-card {
+    display:flex;
+    flex-direction:column;
+    gap: .35rem;
+    padding: 0.9rem;
+    border-radius: 10px;
+    text-decoration: none;
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  body.dark .module-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+  .module-card strong { color: var(--accent); }
+  .module-card span { font-size: .9rem; color: rgba(0,0,0,0.6); }
+  body.dark .module-card span { color: rgba(255,255,255,0.75); }
+  .module-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); transition: all .18s ease; }
+
+  /* Mini chart card */
+  .mini-chart { max-width: 420px; margin: 0 auto 1.5rem; padding: 1rem; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+  body.dark .mini-chart { box-shadow: none; }
+
+  /* Accessibility focus */
+  .module-card:focus, .cta-btn:focus {
+    outline: 3px solid rgba(0,180,216,0.18);
+    outline-offset: 3px;
+  }
+</style>
+
+<script>
+  // Minimal chart showing module coverage (visual cue)
+  const ctxHome = document.getElementById('homeModulesChart');
+  if (ctxHome) {
+    new Chart(ctxHome, {
+      type: 'doughnut',
+      data: {
+        labels: ['Learning', 'Demo', 'Resources'],
+        datasets: [{ data: [50, 35, 15], backgroundColor: ['#00b4d8','#60a5fa','#4ade80'] }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        cutout: '70%'
+      }
+    });
+  }
+</script>
+{% endblock %}

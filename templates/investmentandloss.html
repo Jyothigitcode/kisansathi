@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crop Investment Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+  <style>
+    /* Your existing CSS unchanged */
+    * { box-sizing: border-box; }
+    body { font-family: 'Patrick Hand', cursive; background: linear-gradient(to bottom, #dcedc8, #f0f4c3); margin:0; padding:0; display:flex; justify-content:center; align-items:center; min-height:100vh;}
+    .container {background:#fff8e1; padding:30px; width:100%; max-width:600px; border-radius:12px; border:2px solid #a1887f; box-shadow:0 8px 30px rgba(0,0,0,0.1);}
+    h1,h2 {text-align:center; color:#4e342e; margin-bottom:20px;}
+    .input-group {display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;}
+    input[type="text"], input[type="number"], input[type="date"] {flex:1; padding:12px; border-radius:6px; border:1px solid #8d6e63; font-size:16px; min-width:120px; background-color:#fffde7;}
+    button {padding:12px 18px; background-color:#8bc34a; color:white; border:none; border-radius:6px; cursor:pointer; font-size:15px; transition:background-color 0.3s ease, transform 0.2s ease;}
+    button:hover {background-color:#689f38; transform:scale(1.05) translateY(-2px);}
+    .back-btn {background:#a1887f; margin-bottom:20px;}
+    .back-btn:hover {background:#6d4c41;}
+    .crop-card {background-color:#c5e1a5; padding:14px; margin-bottom:12px; border-radius:6px; text-align:center; font-weight:bold; cursor:pointer; transition: background 0.3s ease, transform 0.2s ease;}
+    .crop-card:hover {background-color:#aed581; transform:scale(1.03);}
+    .crop-card.active {background-color:#9ccc65; border:2px solid #558b2f;}
+    .info-section {margin-bottom:16px; background:#f1f8e9; padding:14px; border-radius:8px; animation: fadeSlide 0.5s ease;}
+    @keyframes fadeSlide {from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);}}
+    .info-section h3 {margin-top:0; color:#33691e; font-size:18px; margin-bottom:6px; position:relative; display:inline-block; cursor:help;}
+    .info-section h3:hover::after {content: attr(data-tooltip); position:absolute; bottom:125%; left:50%; transform:translateX(-50%); background-color:#4e342e; color:#fff; padding:6px 10px; border-radius:6px; white-space:nowrap; font-size:14px; opacity:1; pointer-events:none; z-index:10;}
+    .info-value {font-size:16px; font-weight:500; color:#4e342e;}
+    .profit,.loss {padding:8px 12px; border-radius:6px; display:inline-block;}
+    .profit {background-color:#c8e6c9; border:1px solid #2e7d32; color:#2e7d32; font-weight:bold; font-size:18px;}
+    .loss {background-color:#ffcdd2; border:1px solid #c62828; color:#c62828; font-weight:bold; font-size:18px;}
+    .hidden {display:none !important;}
+    .animated-btn {padding:10px 20px; background:#4CAF50; color:white; border:none; border-radius:5px; cursor:pointer; margin-top:10px;}
+    .expense-list {margin-top:10px; display:flex; flex-wrap:wrap; gap:10px;}
+    .error-msg {color:red; text-align:center; margin-top:10px; font-weight:bold; font-size:15px;}
+    select#expenseLabelInput {padding:12px; border-radius:6px; border:1px solid #8d6e63; font-size:16px; background-color:#fffde7; min-width:120px; flex:1;}
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- Crop List View -->
+  <div id="cropListView">
+    <h1>🌾 Crop Tracker</h1>
+    <div class="input-group">
+      <input type="text" id="cropNameInput" placeholder="Crop name">
+      <input type="date" id="sowDateInput" placeholder="Sow date">
+      <button onclick="addCrop()">Add Crop</button>
+    </div>
+    <div id="cropList"></div>
+  </div>
+
+  <!-- Crop Detail View -->
+  <div id="cropDetailsView" class="hidden">
+    <button class="back-btn" onclick="goBack()">Back</button>
+    <h2 id="cropTitle">Crop Name</h2>
+
+    <div class="info-section">
+      <h3 data-tooltip="Date when seeds were planted">🌱 Sow Date</h3>
+      <div class="info-value" id="sowDateDisplay">-</div>
+    </div>
+
+    <div class="info-section">
+      <h3 data-tooltip="Total money spent on this crop">💰 Investment Breakdown</h3>
+      <div class="info-value" id="investmentDisplay">₹0</div>
+    </div>
+
+    <div class="info-section">
+      <h3 data-tooltip="Total earnings from selling the harvest">📦 Final Income</h3>
+      <div class="info-value" id="incomeDisplay">Not entered</div>
+    </div>
+
+    <div class="info-section" id="expenseSection">
+      <h3 data-tooltip="Add labeled expenses like Seeds, Fertilizer, etc.">🧾 Add Expense</h3>
+      <div class="input-group">
+        <select id="expenseLabelInput">
+          <option value="" disabled selected>Select Expense Type</option>
+          <option value="Seeds">🌱 Seeds</option>
+          <option value="Fertilizers">🧪 Fertilizers</option>
+          <option value="Pesticides">🐞 Pesticides</option>
+          <option value="Labor">👷 Labor</option>
+          <option value="Machinery">🚜 Machinery</option>
+          <option value="Irrigation">🚿 Irrigation</option>
+          <option value="Transport">🚚 Transport</option>
+          <option value="Storage">🏠 Storage</option>
+          <option value="Other">🔧 Other</option>
+        </select>
+        <input type="number" id="expenseAmountInput" placeholder="Amount ₹">
+        <button onclick="addExpense()">Add Expense</button>
+        <div id="expenseErrorMsg" class="error-msg hidden"></div>
+      </div>
+    </div>
+
+    <div class="info-section" id="harvestSection">
+      <h3 data-tooltip="Enter harvest date, quantity, and income">🌾 Harvest Details</h3>
+      <div class="input-group">
+        <input type="date" id="harvestDateInput" placeholder="Harvest Date">
+        <input type="number" id="harvestQtyInput" placeholder="Harvest (kg)">
+        <input type="number" id="finalIncomeInput" placeholder="Final Income ₹">
+        <button onclick="completeHarvest()">Complete Harvest</button>
+      </div>
+    </div>
+
+    <div id="finalResult" class="info-section hidden"></div>
+  </div>
+</div>
+
+<script>
+let crops = [];
+let selectedCropIndex = null;
+
+// --- Replace this with your current logged-in userId ---
+const currentUserId = "USER_ID_HERE";
+
+// Load crops on page load
+async function loadCrops() {
+  const res = await fetch(`/get_crops/${currentUserId}`);
+  const data = await res.json();
+  crops = data;
+  renderCropList();
+}
+
+// Add new crop
+async function addCrop() {
+  const name = document.getElementById("cropNameInput").value.trim();
+  const sowDate = document.getElementById("sowDateInput").value;
+  if (!name || !sowDate) { alert("Enter crop name and sow date."); return; }
+
+  const res = await fetch("/add_crop", {
+    method:"POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({userId:currentUserId, name, sowDate})
+  });
+  const data = await res.json();
+  if(res.ok) { document.getElementById("cropNameInput").value=""; document.getElementById("sowDateInput").value=""; loadCrops(); }
+  else alert(data.message);
+}
+
+// Render crop list
+function renderCropList() {
+  const cropList = document.getElementById("cropList");
+  cropList.innerHTML = "";
+  crops.forEach((crop,index)=>{
+    const card = document.createElement("div");
+    card.className="crop-card";
+    card.textContent=crop.name;
+    card.onclick=()=>openCropDetails(index);
+    cropList.appendChild(card);
+  });
+}
+
+// Open crop details
+function openCropDetails(index){
+  selectedCropIndex=index;
+  document.querySelectorAll('.crop-card').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.crop-card')[index].classList.add('active');
+  updateCropDetails();
+  document.getElementById("cropListView").classList.add("hidden");
+  document.getElementById("cropDetailsView").classList.remove("hidden");
+}
+
+// Update details view
+function updateCropDetails(){
+  const crop = crops[selectedCropIndex];
+  document.getElementById("cropTitle").textContent=crop.name;
+  document.getElementById("sowDateDisplay").textContent=crop.sowDate;
+  const investmentDisplay = document.getElementById("investmentDisplay");
+  investmentDisplay.innerHTML = crop.expenses.length===0?"₹0":crop.expenses.map(e=>`${e.label} – ₹${e.amount}`).join("<br>")+`<br><strong>Total: ₹${crop.totalInvestment}</strong>`;
+  document.getElementById("incomeDisplay").textContent=crop.income!==null?`₹${crop.income}`:"Not entered";
+
+  if(crop.finished){
+    const profit = crop.income - crop.totalInvestment;
+    document.getElementById("finalResult").classList.remove("hidden");
+    document.getElementById("finalResult").innerHTML=`<div class="${profit>=0?'profit':'loss'}">${profit>=0?'Profit':'Loss'}: ₹${Math.abs(profit)}<br>Harvested: ${crop.harvestQty} kg<br>Harvest Date: ${crop.harvestDate}</div>`;
+    document.getElementById("harvestSection").classList.add("hidden");
+    document.getElementById("expenseSection").classList.add("hidden");
+  } else {
+    document.getElementById("finalResult").classList.add("hidden");
+    document.getElementById("harvestSection").classList.remove("hidden");
+    document.getElementById("expenseSection").classList.remove("hidden");
+  }
+}
+
+// Add Expense
+async function addExpense(){
+  const label = document.getElementById("expenseLabelInput").value;
+  const amount = parseFloat(document.getElementById("expenseAmountInput").value);
+  const errorMsg = document.getElementById("expenseErrorMsg");
+  errorMsg.classList.add("hidden"); errorMsg.textContent="";
+
+  if(!label){ errorMsg.textContent="Please select an expense type."; errorMsg.classList.remove("hidden"); return; }
+  if(isNaN(amount) || amount<=0){ errorMsg.textContent="Please enter a valid amount greater than ₹0."; errorMsg.classList.remove("hidden"); return; }
+
+  const crop = crops[selectedCropIndex];
+  crop.expenses.push({label, amount});
+  crop.totalInvestment += amount;
+
+  const res = await fetch(`/update_crop/${crop.name}`, {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({userId:currentUserId, expenses:crop.expenses})
+  });
+
+  document.getElementById("expenseLabelInput").selectedIndex=0;
+  document.getElementById("expenseAmountInput").value="";
+  errorMsg.classList.add("hidden");
+  updateCropDetails();
+}
+
+// Complete Harvest
+async function completeHarvest(){
+  const crop = crops[selectedCropIndex];
+  const harvestDate = document.getElementById("harvestDateInput").value;
+  const harvestQty = parseFloat(document.getElementById("harvestQtyInput").value);
+  const finalIncome = parseFloat(document.getElementById("finalIncomeInput").value);
+  if(!harvestDate || isNaN(harvestQty) || isNaN(finalIncome)){ alert("Fill all harvest details correctly."); return; }
+
+  crop.harvestDate=harvestDate; crop.harvestQty=harvestQty; crop.income=finalIncome; crop.finished=true;
+
+  await fetch(`/update_crop/${crop.name}`, {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({userId:currentUserId, harvestDate, harvestQty, income:finalIncome})
+  });
+
+  updateCropDetails();
+}
+
+// Go Back
+function goBack(){ document.getElementById("cropDetailsView").classList.add("hidden"); document.getElementById("cropListView").classList.remove("hidden"); renderCropList(); }
+
+// Load crops initially
+loadCrops();
+</script>
+</body>
+</html>

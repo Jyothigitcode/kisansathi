@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agriculture Experts - AI Kisan Sakthi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* 🌿 Base Styles */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e0f2e9, #f0f9f0);
+      color: #2e7d32;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    /* 🌟 Main Section */
+    .main-section {
+      flex: 1;
+      padding: 40px 10%;
+    }
+
+    .main-section h1 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 10px;
+      color: #1b5e20;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .loading-text {
+      text-align: center;
+      font-size: 18px;
+      color: #1b5e20;
+      margin-bottom: 25px;
+    }
+
+    /* 🌿 News Container */
+    #news-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* exactly 2 per row */
+      gap: 25px;
+    }
+
+    .news {
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .news:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+
+    .news img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .news img:hover {
+      transform: scale(1.05);
+    }
+
+    .news-content {
+      padding: 15px 20px 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .news a {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2e7d32;
+      text-decoration: none;
+      margin-bottom: 10px;
+      transition: color 0.3s;
+    }
+
+    .news a:hover {
+      color: #145214;
+    }
+
+    .news p {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    /* 🌟 Responsive */
+    @media (max-width: 900px) {
+      .main-section { padding: 30px 5%; }
+      #news-container { gap: 20px; grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .main-section h1 { font-size: 28px; }
+      .news img { height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 🌟 Main Section -->
+  <section class="main-section">
+    <h1>Latest Farmer News</h1>
+    <div class="loading-text" id="loading-text">Loading news...</div>
+    <div id="news-container"></div>
+  </section>
+
+  <script>
+    const API_KEY = "fbb37c9e0f4d4f939250fe4aedf286c3";
+    const KEYWORDS = [
+      "farm", "farmer", "agriculture", "crop", "harvest", "farming", "rural",
+      "farming awards", "farming loans", "farming schemes", "government"
+    ];
+
+    async function loadNews() {
+      const loading = document.getElementById("loading-text");
+      try {
+        const url = `https://newsapi.org/v2/everything?q="farmers" OR "agriculture" OR "crop yield" OR "farming techniques"&language=en&sortBy=publishedAt&pageSize=50&apiKey=${API_KEY}`;
+        let response = await fetch(url);
+        let data = await response.json();
+        let container = document.getElementById("news-container");
+
+        container.innerHTML = "";
+        loading.style.display = "none";
+
+        let articles = [];
+
+        data.articles.forEach(article => {
+          const title = article.title || "";
+          const description = article.description || "";
+          const combinedText = (title + " " + description).toLowerCase();
+          const image = article.urlToImage || "https://via.placeholder.com/400x200?text=No+Image";
+
+          if (KEYWORDS.some(keyword => combinedText.includes(keyword.toLowerCase()))) {
+            articles.push({
+              title: title,
+              description: description,
+              url: article.url,
+              image: image
+            });
+          }
+        });
+
+        if (articles.length === 0) {
+          loading.style.display = "block";
+          loading.textContent = "⚠️ No relevant farmer news found.";
+        }
+
+        articles.forEach(article => {
+          let div = document.createElement("div");
+          div.className = "news";
+          div.innerHTML = `
+            <img src="${article.image}" alt="News Image" />
+            <div class="news-content">
+              <a href="${article.url}" target="_blank">${article.title}</a>
+              <p>${article.description || "No description available"}</p>
+            </div>
+          `;
+          container.appendChild(div);
+        });
+
+      } catch (error) {
+        loading.textContent = "⚠️ Could not load news.";
+        console.error("Error fetching news:", error);
+      }
+    }
+
+    loadNews();
+  </script>
+</body>
+</html>

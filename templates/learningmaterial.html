@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Farmer Learning Hub</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(to right, #e0f7fa, #ffe0b2);
+      color: #000;
+      transition: background 0.5s, color 0.5s;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body.dark {
+      background: linear-gradient(to right, #37474f, #455a64);
+      color: #f9fafb;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 15px;
+      text-align: center;
+      color: #2e7d32;
+    }
+
+    .search-filter {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .crop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    body.dark .card {
+      background: #2c2c2c;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 15px;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 20px;
+      color: #388e3c;
+    }
+
+    .card p {
+      font-size: 14px;
+      margin: 5px 0;
+    }
+
+    .buttons {
+      margin-top: 10px;
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 6px;
+      background: #a5d6a7;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: #81c784;
+      transform: scale(1.05);
+    }
+
+    body.dark button {
+      background: #607d8b;
+      color: #fff;
+    }
+
+    body.dark button:hover {
+      background: #455a64;
+    }
+
+    .steps {
+      margin-top: 10px;
+      font-size: 13px;
+      padding-left: 18px;
+    }
+
+    /* Floating Leaves Animation */
+    .leaf {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-image: url('https://img.icons8.com/emoji/48/leaf-emoji.png');
+      background-size: cover;
+      pointer-events: none;
+      opacity: 0.7;
+      animation: fall linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-50px) rotate(0deg); opacity:0.7; }
+      50% { opacity:1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity:0.7; }
+    }
+  </style>
+</head>
+<body>
+  <h1>🌱 Learning Hub — Crops Made Simple</h1>
+  <p style="text-align:center;">Simple guides in short sentences for farmers. Use the Read Aloud button to hear the content.</p>
+
+  <div class="search-filter">
+    <input type="text" id="search" placeholder="Search crop..." style="flex:1; padding:5px;" />
+    <select id="waterFilter" style="padding:5px;">
+      <option value="All">All Water Needs</option>
+      <option value="Low to Moderate">Low to Moderate</option>
+      <option value="Moderate">Moderate</option>
+      <option value="High">High</option>
+    </select>
+    <select id="categoryFilter" style="padding:5px;">
+      <option value="All">All Categories</option>
+      <option value="Grain">Grains</option>
+      <option value="Vegetable">Vegetables</option>
+      <option value="Fruit">Fruits</option>
+    </select>
+    <select id="langSelect" style="padding:5px;">
+      <option value="en">English</option>
+      <option value="hi">हिंदी (Hindi)</option>
+      <option value="te">తెలుగు (Telugu)</option>
+    </select>
+    <button onclick="toggleDarkMode()">🌙 Dark Mode</button>
+  </div>
+
+  <div id="cropGrid" class="crop-grid"></div>
+
+  <script>
+    let currentLang = "en";
+    let voices = [];
+
+    function loadVoices() { voices = window.speechSynthesis.getVoices(); }
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+
+    const crops = [
+      // Grains
+      { id:"maize", category:"Grain", name:{en:"Maize (Corn)",hi:"मक्का",te:"మొక్కజొన్న"}, image:"https://img.freepik.com/premium-photo/photo-sweet-corn-field-crop-plant-harvesting_808809-21.jpg", short:{en:"Maize is a cereal crop. Grows well in warm weather with moderate rainfall.", hi:"मक्का एक अनाज की फसल है। यह गर्म मौसम और मध्यम वर्षा में उगती है।", te:"మొక్కజొన్న ఒక ధాన్యం. ఇది వేడి వాతావరణంలో మరియు మోస్తరు వర్షంలో బాగా పెరుగుతుంది."}, plantingWindow:"June - July", water:"Moderate", care:{en:["Prepare soil; add compost.","Sow seeds at 2.5 cm depth.","Fertilize with NPK.","Watch for pests."], hi:["मिट्टी तैयार करें।","2.5 सेमी गहराई पर बोएं।","एनपीके खाद डालें।","कीटों से बचाव करें।"], te:["మట్టిని సిద్ధం చేయండి.","2.5 సెం.మీ లోతులో విత్తండి.","ఎన్పీకే ఎరువు వేయండి.","పురుగులు జాగ్రత్త."]} },
+      { id:"rice", category:"Grain", name:{en:"Rice",hi:"धान",te:"బియ్యం"}, image:"https://morningchores.com/wp-content/uploads/2020/04/Growing-Rice-Planting-Guide-Care-Problems-and-Harvest-FB.jpg", short:{en:"Rice is a staple food. Needs high water and clay soil.", hi:"धान मुख्य भोजन है। इसे अधिक पानी और चिकनी मिट्टी चाहिए।", te:"బియ్యం ప్రధాన ఆహారం. దీనికి ఎక్కువ నీరు మరియు మట్టి నేల అవసరం."}, plantingWindow:"June - August", water:"High", care:{en:["Flood fields before planting.","Transplant seedlings carefully.","Maintain water level.","Control weeds."], hi:["खेती से पहले खेत में पानी भरें।","पौधों को ध्यान से लगाएं।","पानी का स्तर बनाए रखें।","खरपतवार हटाएं।"], te:["నాటే ముందు పొలంలో నీరు నింపండి.","మొక్కలు జాగ్రత్తగా నాటండి.","నీటి మట్టాన్ని ఉంచండి.","కలుపు నియంత్రించండి."]} },
+
+      // Vegetables
+      { id:"tomato", category:"Vegetable", name:{en:"Tomato",hi:"टमाटर",te:"టమోటా"}, image:"https://www.thespruce.com/thmb/S9QcicSHxYKNsI0fdfXgwbBSIP8=/5750x3827/filters:no_upscale():max_bytes(150000):strip_icc()/growing-tomatoes-1403296-01-e87fc6443b55423890448cabb12efeba.jpg", short:{en:"Tomatoes need moderate water. Good for warm climates.", hi:"टमाटर को मध्यम पानी चाहिए। यह गर्म मौसम में अच्छे से उगता है।", te:"టమోటాకు మోస్తరు నీరు అవసరం. ఇది వేడి వాతావరణంలో బాగా పెరుగుతుంది."}, plantingWindow:"Sept - Nov", water:"Moderate", care:{en:["Use fertile soil.","Support plants with sticks.","Water regularly.","Protect from pests."], hi:["उपजाऊ मिट्टी का प्रयोग करें।","पौधों को सहारा दें।","नियमित पानी दें।","कीटों से बचाव करें।"], te:["సారవంతమైన మట్టిని వాడండి.","మొక్కలకు కర్రలతో ఆధారం ఇవ్వండి.","నియమిత నీరు పోయండి.","పురుగులు నివారించండి."]} },
+      { id:"brinjal", category:"Vegetable", name:{en:"Brinjal (Eggplant)",hi:"बैंगन",te:"వంకాయ"}, image:"https://www.agrifarming.in/wp-content/uploads/2020/06/Comp1-23.jpg", short:{en:"Brinjal grows in all seasons. Needs moderate water.", hi:"बैंगन हर मौसम में उगता है। इसे मध्यम पानी चाहिए।", te:"వంకాయ అన్ని కాలాల్లో పెరుగుతుంది. దీనికి మోస్తరు నీరు అవసరం."}, plantingWindow:"Year-round", water:"Moderate", care:{en:["Sow seeds in nursery.","Transplant after 30 days.","Irrigate weekly.","Control pests."], hi:["बीज नर्सरी में बोएं।","30 दिन बाद रोपाई करें।","साप्ताहिक सिंचाई करें।","कीट नियंत्रण करें।"], te:["విత్తనాలను నర్సరీలో వేయండి.","30 రోజులకు తర్వాత నాటండి.","వారానికి ఒకసారి నీరు పోయండి.","పురుగులను నియంత్రించండి."]} },
+
+      // Fruits
+      { id:"mango", category:"Fruit", name:{en:"Mango",hi:"आम",te:"మామిడి"}, image:"https://www.greenlife.co.ke/wp-content/uploads/2022/04/Mangoes.jpg", short:{en:"Mango is a summer fruit. Needs warm climate.", hi:"आम गर्मियों का फल है। इसे गर्म जलवायु चाहिए।", te:"మామిడి వేసవి పండు. దీనికి వేడి వాతావరణం అవసరం."}, plantingWindow:"Feb - March", water:"Low to Moderate", care:{en:["Plant grafted saplings.","Water weekly in first year.","Prune branches.","Protect from fruit flies."], hi:["कलम वाले पौधे लगाएं।","पहले साल साप्ताहिक पानी दें।","शाखाएं काटें।","फ्रूट फ्लाई से बचाव करें।"], te:["కలమలు నాటండి.","మొదటి సంవత్సరం వారానికి నీరు పోయండి.","కొమ్మలను కత్తిరించండి.","ఫ్రూట్ ఫ్లై నుంచి రక్షించండి."]} },
+      { id:"banana", category:"Fruit", name:{en:"Banana",hi:"केला",te:"అరటి"}, image:"https://horticulture.co.uk/wp-content/uploads/2020/11/bananaplant-header.jpg", short:{en:"Banana grows year-round. Needs high water.", hi:"केला पूरे साल उगता है। इसे अधिक पानी चाहिए।", te:"అరటి సంవత్సరం పొడవునా పెరుగుతుంది. దీనికి ఎక్కువ నీరు అవసరం."}, plantingWindow:"Year-round", water:"High", care:{en:["Plant suckers.","Irrigate frequently.","Apply manure monthly.","Support bunches with poles."], hi:["चूसने वाले पौधे लगाएं।","बार-बार सिंचाई करें।","मासिक खाद डालें।","फलों को सहारा दें।"], te:["సక్కర్లు నాటండి.","తరచుగా నీరు పోయండి.","నెలకు ఒకసారి ఎరువు వేయండి.","కాయలకు ఆధారం ఇవ్వండి."]} }
+    ];
+
+    const cropGrid = document.getElementById("cropGrid");
+
+    function renderCrops() {
+      const search = document.getElementById("search").value.toLowerCase();
+      const filterWater = document.getElementById("waterFilter").value;
+      const filterCategory = document.getElementById("categoryFilter").value;
+      cropGrid.innerHTML = "";
+
+      const filtered = crops.filter(crop => {
+        const matchesQuery = crop.name[currentLang].toLowerCase().includes(search) || crop.short[currentLang].toLowerCase().includes(search);
+        const matchesWater = filterWater === "All" || crop.water === filterWater;
+        const matchesCategory = filterCategory === "All" || crop.category === filterCategory;
+        return matchesQuery && matchesWater && matchesCategory;
+      });
+
+      filtered.forEach(crop => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${crop.image}" alt="${crop.name[currentLang]}" />
+          <div class="card-content">
+            <h2>${crop.name[currentLang]}</h2>
+            <p><strong>Planting window:</strong> ${crop.plantingWindow}</p>
+            <p><strong>Water need:</strong> ${crop.water}</p>
+            <p>${crop.short[currentLang]}</p>
+            <div class="buttons">
+              <button onclick="speak('${crop.short[currentLang]}')">▶ Read</button>
+              <button onclick="toggleSteps('${crop.id}')">Open</button>
+            </div>
+            <div class="steps" id="steps-${crop.id}" style="display:none;">
+              <ol>
+                ${crop.care[currentLang].map(step => `<li>${step}</li>`).join("")}
+              </ol>
+            </div>
+          </div>
+        `;
+        cropGrid.appendChild(card);
+      });
+
+      if (filtered.length === 0) {
+        cropGrid.innerHTML = "<p style='text-align:center;'>No crops found. Try clearing filters.</p>";
+      }
+    }
+
+    function toggleSteps(id) {
+      const el = document.getElementById("steps-" + id);
+      el.style.display = el.style.display === "none" ? "block" : "none";
+    }
+
+    function speak(text) {
+      if ("speechSynthesis" in window) {
+        const utter = new SpeechSynthesisUtterance(text);
+        if(currentLang==="hi") utter.lang="hi-IN";
+        else if(currentLang==="te") utter.lang="te-IN";
+        else utter.lang="en-IN";
+        const voice = voices.find(v=>v.lang===utter.lang)||voices[0];
+        if(voice) utter.voice=voice;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utter);
+      } else alert("Sorry, your browser does not support text-to-speech.");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+    }
+
+    document.getElementById("search").addEventListener("input", renderCrops);
+    document.getElementById("waterFilter").addEventListener("change", renderCrops);
+    document.getElementById("categoryFilter").addEventListener("change", renderCrops);
+    document.getElementById("langSelect").addEventListener("change", e => { currentLang=e.target.value; renderCrops(); });
+
+    renderCrops();
+
+    // Floating Leaves
+    for (let i = 0; i < 10; i++) {
+      const leaf = document.createElement("div");
+      leaf.className = "leaf";
+      leaf.style.left = Math.random() * 100 + "vw";
+      leaf.style.animationDuration = 5 + Math.random() * 5 + "s";
+      leaf.style.animationDelay = Math.random() * 5 + "s";
+      document.body.appendChild(leaf);
+    }
+  </script>
+</body>
+</html>
