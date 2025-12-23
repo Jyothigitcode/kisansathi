@@ -156,13 +156,7 @@ def signup():
     })
 
     return jsonify({"message": "Signup successful!"})
-@app.route("/db-test")
-def db_test():
-    try:
-        users_collection.insert_one({"render": "ok"})
-        return "MongoDB WORKING ✅"
-    except Exception as e:
-        return f"MongoDB ERROR ❌ : {str(e)}"
+
 
 # ---------------- Auth: Login ----------------
 @app.route("/auth/login", methods=["POST"])
