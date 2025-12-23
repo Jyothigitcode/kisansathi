@@ -86,6 +86,9 @@ veg_price_model = joblib.load('veg_price_model.pkl')
 training_columns = pd.read_csv(
     'training_columns.csv', header=None
 ).iloc[:, 0].tolist()
+@app.route("/health")
+def health():
+    return {"status": "ok"}
 
 # ---------------- Mock Login ----------------
 @app.route("/login/<username>")
